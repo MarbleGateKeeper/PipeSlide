@@ -1,0 +1,27 @@
+modLoader="javafml" #mandatory
+loaderVersion="[45,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="MIO"
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+[[mods]] #mandatory
+modId="pipeslide" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="PipeSlide" #mandatory
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+#logoFile="logo.png" #optional
+#credits="Thanks for this example mod goes to Java" #optional
+authors="MarbleGateKeeper" #optional
+description='''
+'''
+[[dependencies.pipeslide]] #optional
+    modId="forge"
+    mandatory=true
+    versionRange="[45,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.pipeslide]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.4,1.20)"
+    ordering="NONE"
+    side="BOTH"
