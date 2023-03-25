@@ -13,9 +13,9 @@ import plus.dragons.pipeslide.foundation.blockentity.LazyTickBE;
 
 public class PipeNodeBlockEntity extends LazyTickBE {
     @Nullable
-    public PipeConnection toA;
+    public PipeConnection connectionA;
     @Nullable
-    public PipeConnection toB;
+    public PipeConnection connectionB;
 
     public PipeNodeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.PIPE_NODE.get(), pos, state);
@@ -25,24 +25,17 @@ public class PipeNodeBlockEntity extends LazyTickBE {
     @Override
     protected void write(CompoundTag tag, boolean clientPacket) {
         super.write(tag, clientPacket);
-        // TODO
-        /*ListTag listTag = new ListTag();
-        for (BezierConnection bezierConnection : connections.values())
-            listTag.add(bezierConnection.write(worldPosition));
-        tag.put("Connections", listTag);*/
+        if(this.connectionA!=null)
+            tag.put("ConnectionA",connectionA.write());
+        if(this.connectionB!=null)
+            tag.put("ConnectionB",connectionB.write());
     }
 
     @Override
     protected void read(CompoundTag tag, boolean clientPacket) {
         super.read(tag, clientPacket);
-        // TODO
-        /*connections.clear();
-        for (Tag t : tag.getList("Connections", Tag.TAG_COMPOUND)) {
-            if (!(t instanceof CompoundTag))
-                return;
-            BezierConnection connection = new BezierConnection((CompoundTag) t, worldPosition);
-            connections.put(connection.getKey(), connection);
-        }*/
+        this.connectionA = tag.contains("ConnectionA")? new PipeConnection(tag.getCompound("ConnectionA")): null;
+        this.connectionB = tag.contains("ConnectionB")? new PipeConnection(tag.getCompound("ConnectionB")): null;
     }
 
     @Override

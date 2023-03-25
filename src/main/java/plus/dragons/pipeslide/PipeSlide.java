@@ -9,6 +9,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import plus.dragons.pipeslide.entry.ModBlockEntities;
 import plus.dragons.pipeslide.entry.ModBlocks;
 import plus.dragons.pipeslide.entry.ModItems;
 
@@ -25,6 +26,7 @@ public class PipeSlide
 
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModBlockEntities.BLOKC_ENTITIES.register(modEventBus);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> PipeSlideClient::new);
     }

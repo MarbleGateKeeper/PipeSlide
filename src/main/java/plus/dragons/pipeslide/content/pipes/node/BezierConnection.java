@@ -41,7 +41,7 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
                 NbtUtils.readBlockPos(compound.getCompound("MidPoint")));
     }
 
-    public CompoundTag write(BlockPos localTo) {
+    public CompoundTag write() {
         CompoundTag compound = new CompoundTag();
         compound.put("EndPoints", endPoints.serializeEach(NbtUtils::writeBlockPos));
         compound.put("MidPoint", NbtUtils.writeBlockPos(midPoint));
