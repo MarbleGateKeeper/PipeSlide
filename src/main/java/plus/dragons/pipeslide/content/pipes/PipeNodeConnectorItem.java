@@ -2,6 +2,7 @@ package plus.dragons.pipeslide.content.pipes;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.sounds.SoundEvents;
@@ -42,7 +43,7 @@ public class PipeNodeConnectorItem extends Item {
             return super.useOn(pContext);
 
         if (!isFoil(stack)) {
-            if (state.getBlock() instanceof IPipeConnectableNodeBlock pipe && pipe.hasConnectableEnd(level, pos, state)) {
+            if (state.getBlock() instanceof IPipeConnectableNodeBlock pipe && pipe.hasConnectableEnd(level, pos)) {
                 if (!level.isClientSide){
                     player.displayClientMessage(Lang.translateDirect("pipe.start_connect")
                             .withStyle(ChatFormatting.GREEN), true);
@@ -82,7 +83,7 @@ public class PipeNodeConnectorItem extends Item {
         }
 
         if(state.getBlock() instanceof IPipeConnectableNodeBlock pipe){
-            if(pipe.hasConnectableEnd(level, pos, state)){
+            if(pipe.hasConnectableEnd(level, pos)){
 
                 CompoundTag compoundTag = stack.getOrCreateTag();
                 var start = NbtUtils.readBlockPos(compoundTag.getCompound("Start"));
@@ -97,10 +98,17 @@ public class PipeNodeConnectorItem extends Item {
                 }
 
                 var startState = level.getBlockState(start);
-                if(!(startState.getBlock() instanceof IPipeConnectableNodeBlock pipe2) || !pipe2.hasConnectableEnd(level, pos, state)) {
+                if(!(startState.getBlock() instanceof IPipeConnectableNodeBlock pipe2) || !pipe2.hasConnectableEnd(level, pos)) {
                     if (!level.isClientSide) {
                         player.displayClientMessage(Lang.translateDirect("pipe.start_node_not_available").withStyle(ChatFormatting.RED), true);
                         stack.setTag(null);
+                    }
+                    return InteractionResult.FAIL;
+                }
+
+                if(!((IPipeConnectableNodeBlock) startState.getBlock()).canConnectTo(level,start,pos)){
+                    if (!level.isClientSide) {
+                        player.displayClientMessage(Lang.translateDirect("pipe.already_connected").withStyle(ChatFormatting.RED), true);
                     }
                     return InteractionResult.FAIL;
                 }
@@ -157,8 +165,9 @@ public class PipeNodeConnectorItem extends Item {
                     return InteractionResult.SUCCESS;
 
                 BlockPos mid = compoundTag.contains("Mid")?NbtUtils.readBlockPos(compoundTag.getCompound("Mid")):null;
-                ((IPipeConnectableNodeBlock) startState.getBlock()).addPipeConnection(level,start,startState,pos,true,mid);
-                ((IPipeConnectableNodeBlock) state.getBlock()).addPipeConnection(level,pos,state,start,false,mid);
+                Direction facing = pContext.getHorizontalDirection();
+                ((IPipeConnectableNodeBlock) startState.getBlock()).addPipeConnection(level,start,pos,facing,true,mid);
+                ((IPipeConnectableNodeBlock) state.getBlock()).addPipeConnection(level,pos,start,facing,false,mid);
 
                 stack = player.getMainHandItem();
                 if (stack.is(ModItems.PIPE_NODE_CONNECTOR.get())) {

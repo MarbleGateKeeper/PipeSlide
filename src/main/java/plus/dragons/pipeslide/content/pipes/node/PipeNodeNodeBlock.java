@@ -1,6 +1,7 @@
 package plus.dragons.pipeslide.content.pipes.node;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -39,14 +40,19 @@ public class PipeNodeNodeBlock extends Block implements IEntityBlock<PipeNodeBlo
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public boolean hasConnectableEnd(BlockGetter world, BlockPos pos, BlockState state) {
+    public boolean hasConnectableEnd(BlockGetter world, BlockPos pos) {
         var be = getTileEntity(world,pos);
         return be.connectionA == null || be.connectionB == null;
     }
 
+    @Override
+    public boolean canConnectTo(BlockGetter world, BlockPos pos, BlockPos connectTarget) {
+        return false;
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Override
-    public void addPipeConnection(BlockGetter world, BlockPos pos, BlockState state, BlockPos connectTarget, boolean primaryForRender, @Nullable BlockPos midPoint) {
+    public void addPipeConnection(BlockGetter world, BlockPos pos, BlockPos connectTarget, Direction facing, boolean primaryForRender, @Nullable BlockPos midPoint) {
         var be = getTileEntity(world,pos);
         var connection = new PipeConnection(connectTarget);
         connection.primaryForRender = primaryForRender;
