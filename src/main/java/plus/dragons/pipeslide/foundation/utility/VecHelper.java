@@ -248,62 +248,33 @@ public class VecHelper {
         return origin.add(lineDirection.scale(t));
     }
 
-    public static Vec3 bezier(Vec3 p1, Vec3 p2, Vec3 q1, Vec3 q2, float t) {
-        Vec3 v1 = lerp(t, p1, q1);
-        Vec3 v2 = lerp(t, q1, q2);
-        Vec3 v3 = lerp(t, q2, p2);
+    public static Vec3 bezier(Vec3 end1, Vec3 end2, Vec3 mid, float t) {
+        Vec3 inner1 = lerp(t, end1, mid);
+        Vec3 inner2 = lerp(t, mid, end2);
+        return lerp(t, inner1, inner2);
+    }
+
+    public static Vec3 bezierDerivative(Vec3 end1, Vec3 end2, Vec3 mid, float t) {
+        return end1.scale(2 * t - 2)
+                .add(mid.scale(- 4 * t + 2))
+                .add(end2.scale(2 * t));
+    }
+
+    /*public static Vec3 bezier(Vec3 end1, Vec3 end2, Vec3 mid1, Vec3 mid2, float t) {
+        Vec3 v1 = lerp(t, end1, mid1);
+        Vec3 v2 = lerp(t, mid1, mid2);
+        Vec3 v3 = lerp(t, mid2, end2);
         Vec3 inner1 = lerp(t, v1, v2);
         Vec3 inner2 = lerp(t, v2, v3);
         Vec3 result = lerp(t, inner1, inner2);
         return result;
     }
 
-    public static Vec3 bezierDerivative(Vec3 p1, Vec3 p2, Vec3 q1, Vec3 q2, float t) {
-        return p1.scale(-3 * t * t + 6 * t - 3)
-                .add(q1.scale(9 * t * t - 12 * t + 3))
-                .add(q2.scale(-9 * t * t + 6 * t))
-                .add(p2.scale(3 * t * t));
-    }
-
-    @Nullable
-    public static double[] intersectRanged(Vec3 p1, Vec3 q1, Vec3 p2, Vec3 q2, Direction.Axis plane) {
-        Vec3 pDiff = p2.subtract(p1);
-        Vec3 qDiff = q2.subtract(q1);
-        double[] intersect = intersect(p1, q1, pDiff.normalize(), qDiff.normalize(), plane);
-        if (intersect == null)
-            return null;
-        if (intersect[0] < 0 || intersect[1] < 0)
-            return null;
-        if (intersect[0] > pDiff.length() || intersect[1] > qDiff.length())
-            return null;
-        return intersect;
-    }
-
-    @Nullable
-    public static double[] intersect(Vec3 p1, Vec3 p2, Vec3 r, Vec3 s, Direction.Axis plane) {
-        if (plane == Direction.Axis.X) {
-            p1 = new Vec3(p1.y, 0, p1.z);
-            p2 = new Vec3(p2.y, 0, p2.z);
-            r = new Vec3(r.y, 0, r.z);
-            s = new Vec3(s.y, 0, s.z);
-        }
-
-        if (plane == Direction.Axis.Z) {
-            p1 = new Vec3(p1.x, 0, p1.y);
-            p2 = new Vec3(p2.x, 0, p2.y);
-            r = new Vec3(r.x, 0, r.y);
-            s = new Vec3(s.x, 0, s.y);
-        }
-
-        Vec3 qminusp = p2.subtract(p1);
-        double rcs = r.x * s.z - r.z * s.x;
-        if (Mth.equal(rcs, 0))
-            return null;
-        Vec3 rdivrcs = r.scale(1 / rcs);
-        Vec3 sdivrcs = s.scale(1 / rcs);
-        double t = qminusp.x * sdivrcs.z - qminusp.z * sdivrcs.x;
-        double u = qminusp.x * rdivrcs.z - qminusp.z * rdivrcs.x;
-        return new double[] { t, u };
-    }
+    public static Vec3 bezierDerivative(Vec3 end1, Vec3 end2, Vec3 mid1, Vec3 mid2, float t) {
+        return end1.scale(-3 * t * t + 6 * t - 3)
+                .add(mid1.scale(9 * t * t - 12 * t + 3))
+                .add(mid2.scale(-9 * t * t + 6 * t))
+                .add(end2.scale(3 * t * t));
+    }*/
 
 }
