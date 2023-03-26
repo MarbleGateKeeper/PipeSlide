@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes.node;
+package plus.dragons.pipeslide.content.pipes.specific.standard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -9,9 +9,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.pipeslide.content.pipes.PipeConnection;
 import plus.dragons.pipeslide.entry.ModBlockEntities;
+import plus.dragons.pipeslide.content.pipes.IPipeConnectionProviderBE;
 import plus.dragons.pipeslide.foundation.blockentity.LazyTickBE;
 
-public class PipeNodeBlockEntity extends LazyTickBE {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PipeNodeBlockEntity extends LazyTickBE implements IPipeConnectionProviderBE {
     @Nullable
     public PipeConnection connectionA;
     @Nullable
@@ -44,4 +48,11 @@ public class PipeNodeBlockEntity extends LazyTickBE {
         return INFINITE_EXTENT_AABB;
     }
 
+    @Override
+    public List<PipeConnection> getConnection() {
+        List<PipeConnection> ret = new ArrayList<>();
+        if(connectionA!=null) ret.add(connectionA);
+        if(connectionB!=null) ret.add(connectionB);
+        return ret;
+    }
 }

@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes.node;
+package plus.dragons.pipeslide.content.pipes.specific.standard;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.pipeslide.content.pipes.BezierConnection;
 import plus.dragons.pipeslide.content.pipes.IPipeConnectableNodeBlock;
 import plus.dragons.pipeslide.content.pipes.PipeConnection;
 import plus.dragons.pipeslide.entry.ModBlockEntities;
@@ -45,9 +46,13 @@ public class PipeNodeNodeBlock extends Block implements IEntityBlock<PipeNodeBlo
         return be.connectionA == null || be.connectionB == null;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean canConnectTo(BlockGetter world, BlockPos pos, BlockPos connectTarget) {
-        return false;
+        var be = getTileEntity(world,pos);
+        if(be.connectionA!=null && be.connectionA.to.equals(connectTarget))
+            return false;
+        else return be.connectionB == null || !be.connectionB.to.equals(connectTarget);
     }
 
     @SuppressWarnings("ConstantConditions")

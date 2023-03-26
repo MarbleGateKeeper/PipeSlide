@@ -7,7 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.pipeslide.PipeSlide;
-import plus.dragons.pipeslide.content.pipes.node.PipeNodeNodeBlock;
+import plus.dragons.pipeslide.content.pipes.specific.standard.PipeNodeNodeBlock;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PipeSlide.MOD_ID);

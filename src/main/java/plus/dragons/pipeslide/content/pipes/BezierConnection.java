@@ -1,5 +1,7 @@
-package plus.dragons.pipeslide.content.pipes.node;
+package plus.dragons.pipeslide.content.pipes;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -8,7 +10,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.AxisAngle4d;
+import org.joml.Quaternionf;
 import plus.dragons.pipeslide.foundation.utility.Couple;
+import plus.dragons.pipeslide.foundation.utility.Iterate;
 import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 import java.util.Iterator;
@@ -30,10 +37,6 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
         this.endPoints = endPoints;
         this.midPoint = midPoint;
         this.resolved = false;
-    }
-
-    public BezierConnection revert() {
-        return new BezierConnection(endPoints.swap(), midPoint);
     }
 
     public BezierConnection(CompoundTag compound) {
@@ -131,7 +134,7 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
             previous1 = result;
         }
 
-        segments = (int) (length * 2);
+        segments = (int) (length * 3);
         stepLUT = new float[segments + 1];
         stepLUT[0] = 1;
         float combinedDistance = 0;
@@ -228,6 +231,62 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
             segment.normal = segment.derivative.cross(segment.derivative.cross(new Vec3(0,1,0)).normalize()).normalize();
             return segment;
         }
+    }
+
+    private SegmentAngles[] bakedSegments;
+
+    @OnlyIn(Dist.CLIENT)
+    public static class SegmentAngles {
+
+        public PoseStack.Pose tieTransform;
+        public Couple<PoseStack.Pose> railTransforms;
+        public BlockPos lightPosition;
+
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public SegmentAngles[] getBakedSegments() {
+        // TODO
+        if (bakedSegments != null)
+            return bakedSegments;
+
+        int segmentCount = getSegmentCount();
+        bakedSegments = new SegmentAngles[segmentCount + 1];
+        Couple<Vec3> previousOffsets = null;
+
+        for (BezierConnection.Segment segment : this) {
+            int i = segment.index;
+
+            SegmentAngles angles = bakedSegments[i] = new SegmentAngles();
+            Couple<Vec3> railOffsets = Couple.create(segment.position.add(segment.normal.scale(.965f)),
+                    segment.position.subtract(segment.normal.scale(.965f)));
+            Vec3 railMiddle = railOffsets.getFirst()
+                    .add(railOffsets.getSecond())
+                    .scale(.5);
+
+            if (previousOffsets == null) {
+                previousOffsets = railOffsets;
+                continue;
+            }
+
+            Vec3 prevMiddle = previousOffsets.getFirst()
+                    .add(previousOffsets.getSecond())
+                    .scale(.5);
+            Vec3 tieAngles = PipeConnectionProviderRenderer.getModelAngles(segment.normal, railMiddle.subtract(prevMiddle));
+            angles.lightPosition = BlockPos.containing(railMiddle);
+            angles.railTransforms = Couple.create(null, null);
+
+            PoseStack poseStack = new PoseStack();
+            poseStack.translate(prevMiddle.x, prevMiddle.y, prevMiddle.z);
+            poseStack.mulPose(Axis.XP.rotation((float) tieAngles.x));
+            poseStack.mulPose(Axis.YP.rotation((float) tieAngles.y));
+            poseStack.mulPose(Axis.ZP.rotation((float) tieAngles.z));
+            angles.tieTransform = poseStack.last();
+
+            previousOffsets = railOffsets;
+        }
+
+        return bakedSegments;
     }
 
 }

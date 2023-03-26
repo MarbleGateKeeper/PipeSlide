@@ -7,8 +7,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.pipeslide.PipeSlide;
-import plus.dragons.pipeslide.content.pipes.node.PipeNodeBlockEntity;
-import plus.dragons.pipeslide.content.pipes.node.PipeNodeRenderer;
+import plus.dragons.pipeslide.content.pipes.specific.standard.PipeNodeBlockEntity;
+import plus.dragons.pipeslide.content.pipes.specific.standard.PipeNodeRenderer;
 
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOKC_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, PipeSlide.MOD_ID);

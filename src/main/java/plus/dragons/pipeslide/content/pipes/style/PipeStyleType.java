@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes;
+package plus.dragons.pipeslide.content.pipes.style;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
