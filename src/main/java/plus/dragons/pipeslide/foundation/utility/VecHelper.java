@@ -254,13 +254,13 @@ public class VecHelper {
         return lerp(t, inner1, inner2);
     }
 
-    public static Vec3 bezierDerivative(Vec3 end1, Vec3 end2, Vec3 mid, float t) {
+    /*public static Vec3 bezierDerivative(Vec3 end1, Vec3 end2, Vec3 mid, float t) {
         return end1.scale(2 * t - 2)
                 .add(mid.scale(- 4 * t + 2))
                 .add(end2.scale(2 * t));
     }
 
-    /*public static Vec3 bezier(Vec3 end1, Vec3 end2, Vec3 mid1, Vec3 mid2, float t) {
+    public static Vec3 bezier(Vec3 end1, Vec3 end2, Vec3 mid1, Vec3 mid2, float t) {
         Vec3 v1 = lerp(t, end1, mid1);
         Vec3 v2 = lerp(t, mid1, mid2);
         Vec3 v3 = lerp(t, mid2, end2);

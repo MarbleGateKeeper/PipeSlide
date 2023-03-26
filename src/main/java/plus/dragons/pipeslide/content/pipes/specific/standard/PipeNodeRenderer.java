@@ -18,7 +18,7 @@ public class PipeNodeRenderer extends PipeConnectionProviderRenderer<PipeNodeBlo
         Level level = te.getLevel();
         VertexConsumer vb = buffer.getBuffer(RenderType.cutoutMipped());
         te.getConnection()
-                .forEach(bc -> renderConnection(level, bc, ms, vb));
+                .forEach(bc -> renderConnection(level, te.getBlockPos(), bc, ms, vb, light, overlay));
     }
 
     @Override

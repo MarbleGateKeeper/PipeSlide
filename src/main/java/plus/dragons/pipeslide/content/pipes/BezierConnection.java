@@ -1,7 +1,5 @@
 package plus.dragons.pipeslide.content.pipes;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -10,12 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.AxisAngle4d;
-import org.joml.Quaternionf;
 import plus.dragons.pipeslide.foundation.utility.Couple;
-import plus.dragons.pipeslide.foundation.utility.Iterate;
 import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 import java.util.Iterator;
@@ -28,7 +21,6 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
     // runtime
     private boolean resolved;
     private double length;
-    private float[] stepLUT;
     private int segments;
 
     private AABB bounds;
@@ -60,19 +52,10 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
         buffer.writeBlockPos(midPoint);
     }
 
-    public BlockPos getKey() {
-        return endPoints.getSecond();
-    }
-
     // Runtime information
     public double getLength() {
         resolve();
         return length;
-    }
-
-    public float[] getStepLUT() {
-        resolve();
-        return stepLUT;
     }
 
     public int getSegmentCount() {
@@ -85,32 +68,24 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
         return VecHelper.bezier(VecHelper.getCenterOf(endPoints.getFirst()), VecHelper.getCenterOf(endPoints.getSecond()), VecHelper.getCenterOf(midPoint), (float) t);
     }
 
-    public float getSegmentT(int index) {
-        return index == segments ? 1 : index * stepLUT[index] / segments;
-    }
-
-    public double incrementT(double currentT, double distance) {
-        resolve();
-        double dx =
-                VecHelper.bezierDerivative(VecHelper.getCenterOf(endPoints.getFirst()), VecHelper.getCenterOf(endPoints.getSecond()), VecHelper.getCenterOf(midPoint), (float) currentT)
-                        .length() / getLength();
-        return currentT + distance / dx;
-
-    }
 
     public AABB getBounds() {
         resolve();
         return bounds;
     }
 
-    public Vec3 getNormal(double t) {
+    public Vec3 getDirection(double t) {
         resolve();
         Vec3 end1 = VecHelper.getCenterOf(endPoints.getFirst());
         Vec3 end2 = VecHelper.getCenterOf(endPoints.getSecond());
         Vec3 mid = VecHelper.getCenterOf(midPoint);
 
-        Vec3 derivative = VecHelper.bezierDerivative(end1, end2, mid, (float) t).normalize();
-        return derivative.cross(derivative.cross(new Vec3(0,1,0)).normalize()).normalize();
+        if(t==1){
+            return VecHelper.bezier(end1,end2,mid,1).subtract(VecHelper.bezier(end1,end2,mid,segments-1/(float)segments)).normalize();
+        } else {
+            int index = Math.min(segments-1,(int)Math.floor(t/(1F/segments)));
+            return VecHelper.bezier(end1,end2,mid,(index + 1)/(float)segments).subtract(VecHelper.bezier(end1,end2,mid,index/(float)segments)).normalize();
+        }
     }
 
     private void resolve() {
@@ -135,23 +110,14 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
         }
 
         segments = (int) (length * 3);
-        stepLUT = new float[segments + 1];
-        stepLUT[0] = 1;
-        float combinedDistance = 0;
 
         bounds = new AABB(end1, end2);
 
         // determine step lut
-        Vec3 previous2 = end1;
         for (int i = 0; i <= segments; i++) {
             float t = i / (float) segments;
             Vec3 result = VecHelper.bezier(end1, end2, mid, t);
             bounds = bounds.minmax(new AABB(result, result));
-            if (i > 0) {
-                combinedDistance += result.distanceTo(previous2) / length;
-                stepLUT[i] = t / combinedDistance;
-            }
-            previous2 = result;
         }
 
         bounds = bounds.inflate(1.375f);
@@ -163,9 +129,6 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
         return new Bezierator(this);
     }
 
-    /*public int getTrackItemCost() {
-        return (getSegmentCount() + 1) / 2;
-    }*/
 
     public void spawnDestroyParticles(Level level) {
         // TODO
@@ -190,10 +153,9 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
     public static class Segment {
 
         public int index;
-        public Vec3 position;
-        public Vec3 derivative;
-        public Vec3 normal;
-
+        public Vec3 start;
+        public Vec3 end;
+        public Vec3 direction;
     }
 
     private static class Bezierator implements Iterator<Segment> {
@@ -218,72 +180,47 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
 
         @Override
         public boolean hasNext() {
-            return segment.index + 1 <= bc.segments;
+            return segment.index + 1 < bc.segments;
         }
 
         @Override
         public Segment next() {
             segment.index++;
-            float t = this.bc.getSegmentT(segment.index);
-            segment.position = VecHelper.bezier(end1, end2, mid, t);
-            segment.derivative = VecHelper.bezierDerivative(end1, end2, mid, t)
+            float t = segment.index;
+            segment.start = VecHelper.bezier(end1, end2, mid, segment.index/(float) bc.getSegmentCount());
+            segment.end = VecHelper.bezier(end1, end2, mid, (segment.index + 1)/(float) bc.getSegmentCount());
+            segment.direction = VecHelper.bezier(end1, end2, mid, t).subtract(VecHelper.bezier(end1, end2, mid, (segment.index + 1)/(float) bc.getSegmentCount()))
                     .normalize();
-            segment.normal = segment.derivative.cross(segment.derivative.cross(new Vec3(0,1,0)).normalize()).normalize();
             return segment;
         }
     }
 
-    private SegmentAngles[] bakedSegments;
+    private SegmentRenderData[] bakedSegments;
 
-    @OnlyIn(Dist.CLIENT)
-    public static class SegmentAngles {
+    public static class SegmentRenderData {
 
-        public PoseStack.Pose tieTransform;
-        public Couple<PoseStack.Pose> railTransforms;
-        public BlockPos lightPosition;
+        public Vec3 start;
+        public Vec3 end;
+        public Vec3 direction;
 
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public SegmentAngles[] getBakedSegments() {
-        // TODO
+    public SegmentRenderData[] getSegmentRenderData() {
+
         if (bakedSegments != null)
             return bakedSegments;
 
         int segmentCount = getSegmentCount();
-        bakedSegments = new SegmentAngles[segmentCount + 1];
-        Couple<Vec3> previousOffsets = null;
+        bakedSegments = new SegmentRenderData[segmentCount + 1];
 
         for (BezierConnection.Segment segment : this) {
             int i = segment.index;
 
-            SegmentAngles angles = bakedSegments[i] = new SegmentAngles();
-            Couple<Vec3> railOffsets = Couple.create(segment.position.add(segment.normal.scale(.965f)),
-                    segment.position.subtract(segment.normal.scale(.965f)));
-            Vec3 railMiddle = railOffsets.getFirst()
-                    .add(railOffsets.getSecond())
-                    .scale(.5);
+            SegmentRenderData ends = bakedSegments[i] = new SegmentRenderData();
 
-            if (previousOffsets == null) {
-                previousOffsets = railOffsets;
-                continue;
-            }
-
-            Vec3 prevMiddle = previousOffsets.getFirst()
-                    .add(previousOffsets.getSecond())
-                    .scale(.5);
-            Vec3 tieAngles = PipeConnectionProviderRenderer.getModelAngles(segment.normal, railMiddle.subtract(prevMiddle));
-            angles.lightPosition = BlockPos.containing(railMiddle);
-            angles.railTransforms = Couple.create(null, null);
-
-            PoseStack poseStack = new PoseStack();
-            poseStack.translate(prevMiddle.x, prevMiddle.y, prevMiddle.z);
-            poseStack.mulPose(Axis.XP.rotation((float) tieAngles.x));
-            poseStack.mulPose(Axis.YP.rotation((float) tieAngles.y));
-            poseStack.mulPose(Axis.ZP.rotation((float) tieAngles.z));
-            angles.tieTransform = poseStack.last();
-
-            previousOffsets = railOffsets;
+            ends.start = segment.start;
+            ends.end = segment.end;
+            ends.direction = segment.direction;
         }
 
         return bakedSegments;

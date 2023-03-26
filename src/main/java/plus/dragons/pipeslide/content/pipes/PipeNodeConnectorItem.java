@@ -131,7 +131,7 @@ public class PipeNodeConnectorItem extends Item {
                     }
                     for(var seg:bezier){
                         // TODO not work as expected
-                        var derivative = seg.derivative;
+                        var derivative = seg.direction;
                         if(Math.sqrt(Math.pow(Math.abs(derivative.x),2)+Math.pow(Math.abs(derivative.z),2))<Math.abs(derivative.y)){
                             if (!level.isClientSide)
                                 player.displayClientMessage(Lang.translateDirect("pipe.slope_to_large")
