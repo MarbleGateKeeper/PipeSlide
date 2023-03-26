@@ -65,10 +65,11 @@ public class PipeNodeConnectorItem extends Item {
             CompoundTag compoundTag = stack.getOrCreateTag();
             if(compoundTag.contains("Mid")){
                 if (!level.isClientSide){
-                    player.displayClientMessage(Lang.translateDirect("pipe.already_chose_anchor")
-                            .withStyle(ChatFormatting.RED), true);
+                    player.displayClientMessage(Lang.translateDirect("pipe.anchor_chose_again")
+                            .withStyle(ChatFormatting.GREEN), true);
+                    compoundTag.put("Mid", NbtUtils.writeBlockPos(pos));
                 }
-                return InteractionResult.FAIL;
+                return InteractionResult.SUCCESS;
             } else {
                 if (!level.isClientSide){
                     player.displayClientMessage(Lang.translateDirect("pipe.anchor_chose")

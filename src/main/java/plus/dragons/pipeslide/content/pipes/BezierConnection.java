@@ -109,11 +109,10 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
             previous1 = result;
         }
 
-        segments = (int) (length * 3);
+        segments = (int) (length * 2);
 
         bounds = new AABB(end1, end2);
 
-        // determine step lut
         for (int i = 0; i <= segments; i++) {
             float t = i / (float) segments;
             Vec3 result = VecHelper.bezier(end1, end2, mid, t);
@@ -171,7 +170,7 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
             this.bc = bc;
 
             end1 = VecHelper.getCenterOf(bc.endPoints.getFirst());
-            end2 = VecHelper.getCenterOf(bc.endPoints.getFirst());
+            end2 = VecHelper.getCenterOf(bc.endPoints.getSecond());
             mid = VecHelper.getCenterOf(bc.midPoint);
 
             segment = new Segment();
@@ -189,7 +188,7 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
             float t = segment.index;
             segment.start = VecHelper.bezier(end1, end2, mid, segment.index/(float) bc.getSegmentCount());
             segment.end = VecHelper.bezier(end1, end2, mid, (segment.index + 1)/(float) bc.getSegmentCount());
-            segment.direction = VecHelper.bezier(end1, end2, mid, t).subtract(VecHelper.bezier(end1, end2, mid, (segment.index + 1)/(float) bc.getSegmentCount()))
+            segment.direction = segment.start.vectorTo(segment.end).normalize()
                     .normalize();
             return segment;
         }

@@ -7,14 +7,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.WaterFluid;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 public interface IPipeStyle {
@@ -40,7 +35,6 @@ public interface IPipeStyle {
         public void fillPipeSegment(Vec3 start, Vec3 end, Vec3 direction, PoseStack poseStack, VertexConsumer consumer, int light,
                                     int overlay) {
 
-            poseStack.translate(0.5,0.5,0.5);
             var matrix = poseStack.last().pose();
             var atlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(IClientFluidTypeExtensions.of(Fluids.WATER.defaultFluidState()).getFlowingTexture());
 

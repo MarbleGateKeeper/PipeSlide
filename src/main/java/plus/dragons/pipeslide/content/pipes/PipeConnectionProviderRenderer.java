@@ -16,13 +16,19 @@ public abstract class PipeConnectionProviderRenderer<T extends BlockEntity & IPi
             return;
 
         ms.pushPose();
+        ms.translate(0.5,0.5,0.5);
         if(connection.curveConnection==null){
             connection.style.fillPipeSegment(Vec3.atCenterOf(startFromPos),Vec3.atCenterOf(connection.to),
                     Vec3.atCenterOf(startFromPos).vectorTo(Vec3.atCenterOf(connection.to)).normalize(),
                     ms,vb,light,overlay);
         } else {
+            Vec3 totalOffset = Vec3.ZERO;
             for(var data: connection.curveConnection.getSegmentRenderData()){
-                connection.style.fillPipeSegment(data.start,data.end, data.direction, ms,vb,light,overlay);
+                ms.pushPose();
+                ms.translate(totalOffset.x,totalOffset.y,totalOffset.z);
+                connection.style.fillPipeSegment(data.start, data.end, data.direction, ms,vb,light,overlay);
+                ms.popPose();
+                totalOffset = totalOffset.add(data.start.vectorTo(data.end));
             }
         }
         ms.popPose();
