@@ -195,7 +195,7 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
         }
     }
 
-    private SegmentRenderData[] bakedSegments;
+    private SegmentRenderData[] segmentRenderData;
 
     public static class SegmentRenderData {
 
@@ -207,23 +207,23 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
 
     public SegmentRenderData[] getSegmentRenderData() {
 
-        if (bakedSegments != null)
-            return bakedSegments;
+        if (segmentRenderData != null)
+            return segmentRenderData;
 
         int segmentCount = getSegmentCount();
-        bakedSegments = new SegmentRenderData[segmentCount + 1];
+        segmentRenderData = new SegmentRenderData[segmentCount];
 
         for (BezierConnection.Segment segment : this) {
             int i = segment.index;
 
-            SegmentRenderData ends = bakedSegments[i] = new SegmentRenderData();
+            SegmentRenderData ends = segmentRenderData[i] = new SegmentRenderData();
 
             ends.start = segment.start;
             ends.end = segment.end;
             ends.direction = segment.direction;
         }
 
-        return bakedSegments;
+        return segmentRenderData;
     }
 
 }
