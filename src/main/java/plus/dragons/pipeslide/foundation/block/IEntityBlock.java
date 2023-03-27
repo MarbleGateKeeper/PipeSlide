@@ -33,7 +33,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import plus.dragons.pipeslide.foundation.blockentity.LazyTickBE;
+import plus.dragons.pipeslide.content.pipes.NavigatingBE;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -70,8 +70,8 @@ public interface IEntityBlock<T extends BlockEntity> extends EntityBlock {
         if (blockState.is(newBlockState.getBlock()) && newBlockState.hasBlockEntity())
             return;
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof LazyTickBE lazyTickBE)
-            lazyTickBE.destroy();
+        if (blockEntity instanceof NavigatingBE navigatingBE)
+            navigatingBE.destroy();
         level.removeBlockEntity(pos);
     }
 
@@ -87,8 +87,8 @@ public interface IEntityBlock<T extends BlockEntity> extends EntityBlock {
     @Override
     default <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level pLevel, BlockState pState,
                                                                    BlockEntityType<S> pBlockEntityType) {
-        if (LazyTickBE.class.isAssignableFrom(getTileEntityClass()))
-            return new LazyTickBE.Ticker<>();
+        if (NavigatingBE.class.isAssignableFrom(getTileEntityClass()))
+            return new NavigatingBE.Ticker<>();
         return null;
     }
 

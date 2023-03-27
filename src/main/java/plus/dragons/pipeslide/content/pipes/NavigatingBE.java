@@ -1,9 +1,8 @@
-package plus.dragons.pipeslide.foundation.blockentity;
+package plus.dragons.pipeslide.content.pipes;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -12,13 +11,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import plus.dragons.pipeslide.foundation.blockentity.CachedRenderBoundingBoxBE;
 
 /**
  * Reference:
  * Version: com.simibubi.create:create-1.19.2:0.5.0.i-23
  * Class: com.simibubi.create.foundation.tileEntity.SmartTileEntity
  */
-public abstract class LazyTickBE extends CachedRenderBoundingBoxBE{
+public abstract class NavigatingBE extends CachedRenderBoundingBoxBE implements INavigationPipeBE {
 
     private boolean initialized = false;
     private boolean firstNbtRead = true;
@@ -29,7 +29,7 @@ public abstract class LazyTickBE extends CachedRenderBoundingBoxBE{
     // Used for simulating this TE in a client-only setting
     private boolean virtualMode;
 
-    public LazyTickBE(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public NavigatingBE(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         setLazyTickRate(10);
     }
@@ -159,7 +159,7 @@ public abstract class LazyTickBE extends CachedRenderBoundingBoxBE{
         public void tick(Level pLevel, BlockPos pPos, BlockState pState, T pBlockEntity) {
             if (!pBlockEntity.hasLevel())
                 pBlockEntity.setLevel(pLevel);
-            ((LazyTickBE) pBlockEntity).tick();
+            ((NavigatingBE) pBlockEntity).tick();
         }
 
     }
