@@ -23,7 +23,7 @@ public abstract class PipeConnectionProviderRenderer<T extends BlockEntity & IPi
         } else {
             Vec3 totalOffset = Vec3.ZERO;
             for(var data: connection.curveConnection.getSegmentRenderData()){
-                poseStack.translate(0,0.0001,0);
+                poseStack.translate(0.001,0.001,0.001);
                 poseStack.pushPose();
                 poseStack.translate(totalOffset.x,totalOffset.y,totalOffset.z);
                 connection.style.fillPipeSegment(data.start, data.end, poseStack, vb, light, overlay);

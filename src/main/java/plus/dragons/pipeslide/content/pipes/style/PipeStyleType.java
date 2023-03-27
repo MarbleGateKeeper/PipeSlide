@@ -14,7 +14,7 @@ public class PipeStyleType<T extends IPipeStyle> {
     private final Function<CompoundTag,T> factory;
 
     public static final PipeStyleType<IPipeStyle> DEFAULT =
-            register(PipeSlide.genRL("empty"), (compoundTag) -> IPipeStyle.EMPTY);
+            register(PipeSlide.genRL("default"), (compoundTag) -> MarbleWhiteStyle.INSTANCE);
 
     public static <T extends IPipeStyle> PipeStyleType<T> register(ResourceLocation id, Function<CompoundTag,T> factory) {
         PipeStyleType<T> type = new PipeStyleType<>(id, factory);

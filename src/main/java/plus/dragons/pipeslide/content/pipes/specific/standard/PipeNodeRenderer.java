@@ -13,12 +13,17 @@ public class PipeNodeRenderer extends PipeConnectionProviderRenderer<PipeNodeBlo
 
     public PipeNodeRenderer(BlockEntityRendererProvider.Context context) {}
     @Override
-    protected void renderSafe(PipeNodeBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light,
+    protected void renderSafe(PipeNodeBlockEntity te, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light,
                               int overlay) {
         Level level = te.getLevel();
         VertexConsumer vb = buffer.getBuffer(RenderType.cutoutMipped());
-        te.getConnection()
-                .forEach(bc -> renderConnection(level, te.getBlockPos(), bc, ms, vb, light, overlay));
+        poseStack.pushPose();
+        poseStack.translate((te.getBlockPos().getX() % 100) * 0.0001, (te.getBlockPos().getY() % 100) * 0.0001, (te.getBlockPos().getZ() % 100) * 0.0001);
+        te.getConnection().forEach(bc -> {
+                    poseStack.translate(0.001, 0.001, 0.001);
+                    renderConnection(level, te.getBlockPos(), bc, poseStack, vb, light, overlay);
+                });
+        poseStack.popPose();
     }
 
     @Override

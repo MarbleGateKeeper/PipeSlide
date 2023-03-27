@@ -109,7 +109,7 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
             previous1 = result;
         }
 
-        segments = (int) (length * 2);
+        segments = (int) Math.ceil(length * 1.5);
 
         bounds = new AABB(end1, end2);
 

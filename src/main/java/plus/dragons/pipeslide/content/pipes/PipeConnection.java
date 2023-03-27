@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.pipeslide.content.pipes.style.IPipeStyle;
+import plus.dragons.pipeslide.content.pipes.style.MarbleWhiteStyle;
 import plus.dragons.pipeslide.content.pipes.style.PipeStyleType;
 
 public class PipeConnection {
@@ -27,7 +28,7 @@ public class PipeConnection {
 
     public PipeConnection(BlockPos to) {
         this.to = to;
-        this.style = IPipeStyle.EMPTY;
+        this.style = MarbleWhiteStyle.INSTANCE;
         this.curveConnection = null;
         this.primaryForRender = false;
     }
