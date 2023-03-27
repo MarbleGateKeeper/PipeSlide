@@ -200,7 +200,6 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
 
         public Vec3 start;
         public Vec3 end;
-        public Vec3 direction;
 
     }
 
@@ -219,7 +218,6 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
 
             ends.start = segment.start;
             ends.end = segment.end;
-            ends.direction = segment.direction;
         }
 
         return segmentRenderData;

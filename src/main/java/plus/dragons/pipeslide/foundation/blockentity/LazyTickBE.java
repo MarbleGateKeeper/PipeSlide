@@ -86,8 +86,6 @@ public abstract class LazyTickBE extends CachedRenderBoundingBoxBE{
     @Override
     public final void setRemoved() {
         super.setRemoved();
-        if (!chunkUnloaded)
-            remove();
         invalidate();
     }
 
@@ -95,11 +93,6 @@ public abstract class LazyTickBE extends CachedRenderBoundingBoxBE{
      * Block destroyed or Chunk unloaded. Usually invalidates capabilities
      */
     public void invalidate() {}
-
-    /**
-     * Block destroyed or picked up by a contraption. Usually detaches kinetics
-     */
-    public void remove() {}
 
     /**
      * Block destroyed or replaced. Requires Block to call ITE::onRemove

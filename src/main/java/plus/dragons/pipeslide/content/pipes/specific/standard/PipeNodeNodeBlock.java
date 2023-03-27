@@ -12,14 +12,14 @@ import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.pipeslide.content.pipes.BezierConnection;
-import plus.dragons.pipeslide.content.pipes.IPipeConnectableNodeBlock;
+import plus.dragons.pipeslide.content.pipes.IPipeConnectableBlock;
 import plus.dragons.pipeslide.content.pipes.PipeConnection;
 import plus.dragons.pipeslide.entry.ModBlockEntities;
 import plus.dragons.pipeslide.foundation.block.IEntityBlock;
 import plus.dragons.pipeslide.foundation.block.ProperWaterloggedBlock;
 import plus.dragons.pipeslide.foundation.utility.Couple;
 
-public class PipeNodeNodeBlock extends Block implements IEntityBlock<PipeNodeBlockEntity>, ProperWaterloggedBlock, IPipeConnectableNodeBlock {
+public class PipeNodeNodeBlock extends Block implements IEntityBlock<PipeNodeBlockEntity>, ProperWaterloggedBlock, IPipeConnectableBlock {
     public PipeNodeNodeBlock() {
         super(BlockBehaviour.Properties.of(Material.METAL).strength(128.0f).noOcclusion());
     }
@@ -73,5 +73,15 @@ public class PipeNodeNodeBlock extends Block implements IEntityBlock<PipeNodeBlo
         } else {
             throw new RuntimeException("PipeNode " + be + " at " + pos + " cannot attack more connection");
         }
+    }
+
+    @Override
+    public void removePipeConnection(BlockGetter world, BlockPos pos, BlockPos removeTarget) {
+        var be = getTileEntity(world,pos);
+        if(be.connectionA!=null && be.connectionA.to.equals(removeTarget))
+            be.connectionA = null;
+        else if(be.connectionB!=null && be.connectionB.to.equals(removeTarget))
+            be.connectionB = null;
+        be.notifyUpdate();
     }
 }

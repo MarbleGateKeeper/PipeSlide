@@ -4,12 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 public interface IPipeStyle {
@@ -17,10 +16,12 @@ public interface IPipeStyle {
 
     PipeStyleType<?> getType();
 
-    void fillPipeSegment(Vec3 start, Vec3 end, Vec3 direction, PoseStack poseStack, VertexConsumer consumer,int light,
+    void fillPipeSegment(Vec3 start, Vec3 end, PoseStack poseStack, VertexConsumer consumer,int light,
                          int overlay);
 
     IPipeStyle EMPTY = new IPipeStyle() {
+
+        public static final ResourceLocation IRON_BLOCK = new ResourceLocation("block/iron_block");
         @Override
         public CompoundTag write() {
             return new CompoundTag();
@@ -32,17 +33,20 @@ public interface IPipeStyle {
         }
 
         @Override
-        public void fillPipeSegment(Vec3 start, Vec3 end, Vec3 direction, PoseStack poseStack, VertexConsumer consumer, int light,
+        public void fillPipeSegment(Vec3 start, Vec3 end, PoseStack poseStack, VertexConsumer consumer, int light,
                                     int overlay) {
-
+            
+            var direction = start.vectorTo(end).normalize();
             var matrix = poseStack.last().pose();
-            var atlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(IClientFluidTypeExtensions.of(Fluids.WATER.defaultFluidState()).getFlowingTexture());
+            var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(IRON_BLOCK);
 
             Vec3 absEnd = start.vectorTo(end);
 
-            // calculate vertex
+            // calculate vertex and vertex normal
             double extend = 0.2;
             double width = 0.24;
+            double length = absEnd.length();
+            double textureRepeatIndex = length * 0.5;
             Vec3 frontFaceNormal = direction.scale(-1).normalize();
             Vec3 leftFaceNormal = VecHelper.rotate(direction,-90, Direction.Axis.Y).normalize();
             Vec3 rightFaceNormal = VecHelper.rotate(direction,90, Direction.Axis.Y).normalize();
@@ -66,86 +70,86 @@ public interface IPipeStyle {
             Vec3 back4 = absEnd.add(extendBack).add(downWidth).add(rightWidth);
 
             // build front face
-            consumer.vertex(matrix, (float) front1.x, (float) front1.y, (float) front1.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front1.x, (float) front1.y, (float) front1.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) frontFaceNormal.x, (float) frontFaceNormal.y, (float) frontFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) front2.x, (float) front2.y, (float) front2.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front2.x, (float) front2.y, (float) front2.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) frontFaceNormal.x, (float) frontFaceNormal.y, (float) frontFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) front3.x, (float) front3.y, (float) front3.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front3.x, (float) front3.y, (float) front3.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) frontFaceNormal.x, (float) frontFaceNormal.y, (float) frontFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) front4.x, (float) front4.y, (float) front4.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front4.x, (float) front4.y, (float) front4.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) frontFaceNormal.x, (float) frontFaceNormal.y, (float) frontFaceNormal.z).endVertex();
 
             // build back face
-            consumer.vertex(matrix, (float) back2.x, (float) back2.y, (float) back2.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back2.x, (float) back2.y, (float) back2.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) direction.x, (float) direction.y, (float) direction.z).endVertex();
-            consumer.vertex(matrix, (float) back1.x, (float) back1.y, (float) back1.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back1.x, (float) back1.y, (float) back1.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) direction.x, (float) direction.y, (float) direction.z).endVertex();
-            consumer.vertex(matrix, (float) back4.x, (float) back4.y, (float) back4.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back4.x, (float) back4.y, (float) back4.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) direction.x, (float) direction.y, (float) direction.z).endVertex();
-            consumer.vertex(matrix, (float) back3.x, (float) back3.y, (float) back3.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back3.x, (float) back3.y, (float) back3.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) direction.x, (float) direction.y, (float) direction.z).endVertex();
 
             // build up face
-            consumer.vertex(matrix, (float) front1.x, (float) front1.y, (float) front1.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front1.x, (float) front1.y, (float) front1.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) upFaceNormal.x, (float) upFaceNormal.y, (float) upFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) back1.x, (float) back1.y, (float) back1.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back1.x, (float) back1.y, (float) back1.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) upFaceNormal.x, (float) upFaceNormal.y, (float) upFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) back2.x, (float) back2.y, (float) back2.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back2.x, (float) back2.y, (float) back2.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) upFaceNormal.x, (float) upFaceNormal.y, (float) upFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) front2.x, (float) front2.y, (float) front2.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front2.x, (float) front2.y, (float) front2.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) upFaceNormal.x, (float) upFaceNormal.y, (float) upFaceNormal.z).endVertex();
 
             // build down face
-            consumer.vertex(matrix, (float) front3.x, (float) front3.y, (float) front3.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front3.x, (float) front3.y, (float) front3.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) downFaceNormal.x, (float) downFaceNormal.y, (float) downFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) back3.x, (float) back3.y, (float) back3.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back3.x, (float) back3.y, (float) back3.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) downFaceNormal.x, (float) downFaceNormal.y, (float) downFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) back4.x, (float) back4.y, (float) back4.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back4.x, (float) back4.y, (float) back4.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) downFaceNormal.x, (float) downFaceNormal.y, (float) downFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) front4.x, (float) front4.y, (float) front4.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front4.x, (float) front4.y, (float) front4.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) downFaceNormal.x, (float) downFaceNormal.y, (float) downFaceNormal.z).endVertex();
 
             // build left face
-            consumer.vertex(matrix, (float) back1.x, (float) back1.y, (float) back1.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back1.x, (float) back1.y, (float) back1.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) leftFaceNormal.x, (float) leftFaceNormal.y, (float) leftFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) front1.x, (float) front1.y, (float) front1.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front1.x, (float) front1.y, (float) front1.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) leftFaceNormal.x, (float) leftFaceNormal.y, (float) leftFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) front4.x, (float) front4.y, (float) front4.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front4.x, (float) front4.y, (float) front4.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) leftFaceNormal.x, (float) leftFaceNormal.y, (float) leftFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) back4.x, (float) back4.y, (float) back4.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back4.x, (float) back4.y, (float) back4.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) leftFaceNormal.x, (float) leftFaceNormal.y, (float) leftFaceNormal.z).endVertex();
 
             // build right face
-            consumer.vertex(matrix, (float) front2.x, (float) front2.y, (float) front2.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front2.x, (float) front2.y, (float) front2.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) rightFaceNormal.x, (float) rightFaceNormal.y, (float) rightFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) back2.x, (float) back2.y, (float) back2.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back2.x, (float) back2.y, (float) back2.z).color(1,1,1,1F).uv(atlas.getU0(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) rightFaceNormal.x, (float) rightFaceNormal.y, (float) rightFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) back3.x, (float) back3.y, (float) back3.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) back3.x, (float) back3.y, (float) back3.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV1())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) rightFaceNormal.x, (float) rightFaceNormal.y, (float) rightFaceNormal.z).endVertex();
-            consumer.vertex(matrix, (float) front3.x, (float) front3.y, (float) front3.z).color(1,0,0,1F).uv(atlas.getU0(),atlas.getV0())
+            consumer.vertex(matrix, (float) front3.x, (float) front3.y, (float) front3.z).color(1,1,1,1F).uv(atlas.getU1(),atlas.getV0())
                     .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
                     .normal((float) rightFaceNormal.x, (float) rightFaceNormal.y, (float) rightFaceNormal.z).endVertex();
         }

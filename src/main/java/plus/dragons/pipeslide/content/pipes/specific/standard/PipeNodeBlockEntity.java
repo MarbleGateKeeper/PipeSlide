@@ -7,6 +7,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.pipeslide.content.pipes.IPipeConnectableBlock;
 import plus.dragons.pipeslide.content.pipes.PipeConnection;
 import plus.dragons.pipeslide.entry.ModBlockEntities;
 import plus.dragons.pipeslide.content.pipes.IPipeConnectionProviderBE;
@@ -54,5 +55,17 @@ public class PipeNodeBlockEntity extends LazyTickBE implements IPipeConnectionPr
         if(connectionA!=null) ret.add(connectionA);
         if(connectionB!=null) ret.add(connectionB);
         return ret;
+    }
+
+    @Override
+    public void destroy() {
+        if(connectionA!=null){
+            if(level.getBlockState(connectionA.to).getBlock() instanceof IPipeConnectableBlock pipe)
+                pipe.removePipeConnection(level,connectionA.to,getBlockPos());
+        }
+        if(connectionB!=null){
+            if(level.getBlockState(connectionB.to).getBlock() instanceof IPipeConnectableBlock pipe)
+                pipe.removePipeConnection(level,connectionB.to,getBlockPos());
+        }
     }
 }
