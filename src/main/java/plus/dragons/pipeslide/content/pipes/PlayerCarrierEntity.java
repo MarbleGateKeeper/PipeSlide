@@ -56,27 +56,18 @@ public class PlayerCarrierEntity extends Entity {
             }
             reapplyPosition();
         } else {
-            if(navigator==null){
-                this.remove(RemovalReason.DISCARDED);
-                return;
-            }
             if (getFirstPassenger() == null){
                 this.remove(RemovalReason.DISCARDED);
                 return;
             }
-            moveAlongPipe();
+            if(this.navigator!=null){
+                moveAlongPipe();
+            }
         }
     }
 
     public void moveAlongPipe(){
         var result = navigator.navigate(this,nextNode,currentSpeed,currentT);
-        if(result.nextNode()==null){
-            navigator.navigate(this,nextNode,currentSpeed,0.99F);
-            if (getFirstPassenger() instanceof Player player){
-                player.setPos(VecHelper.getCenterOf(nextNode).add(0,0.7,9));
-                player.setDeltaMovement(getDeltaMovement().scale(1.2));
-            }
-        }
         this.navigator = result.navigatorNext();
         this.nextNode = result.nextNode();
         this.currentT = result.t();

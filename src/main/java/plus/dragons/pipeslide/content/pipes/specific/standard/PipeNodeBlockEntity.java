@@ -113,7 +113,9 @@ public class PipeNodeBlockEntity extends NavigatingBE implements IPipeConnection
                 var nextNextNode = nextNavigator.getNextNode(getBlockPos());
                 carrier.setPos(nextVec3);
 
+
                 if(nextNextNode==null) {
+                    // No next node
                     return new Result(null, null, speed, 1);
                 } else {
                     return nextNavigator.navigate(carrier, nextNextNode, speed, 0);
