@@ -14,8 +14,6 @@ import plus.dragons.pipeslide.entry.ModBlocks;
 import plus.dragons.pipeslide.entry.ModEntityTypes;
 import plus.dragons.pipeslide.entry.ModItems;
 
-import java.awt.*;
-
 @Mod(PipeSlide.MOD_ID)
 public class PipeSlide
 {

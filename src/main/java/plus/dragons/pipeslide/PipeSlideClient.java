@@ -9,8 +9,6 @@ import plus.dragons.pipeslide.entry.ModItems;
 import plus.dragons.pipeslide.foundation.client.model.AllBlockPartials;
 import plus.dragons.pipeslide.foundation.client.model.PartialModel;
 
-import javax.swing.text.html.parser.Entity;
-
 public class PipeSlideClient {
     public PipeSlideClient() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
