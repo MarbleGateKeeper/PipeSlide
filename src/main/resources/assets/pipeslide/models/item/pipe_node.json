@@ -1,4 +1,3 @@
 {
-    "parent": "pipeslide:block/pipe_node",
-    "render_type": "cutout_mipped"
+    "parent": "pipeslide:block/pipe_node"
 }
