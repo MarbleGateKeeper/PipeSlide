@@ -22,7 +22,7 @@ public class PipeConnection {
         this.to = NbtUtils.readBlockPos(compound.getCompound("TargetPos"));
         var styleType = new ResourceLocation(compound.getString("StyleType"));
         this.style = PipeStyleType.TYPES.get(styleType).fromTag(compound.getCompound("Style"));
-        this.curveConnection = compound.contains("Curve")? new BezierConnection(compound.getCompound("Curve")): null;
+        this.curveConnection = compound.contains("Curve") ? new BezierConnection(compound.getCompound("Curve")) : null;
         this.primaryForRender = compound.getBoolean("PrimaryForRender");
     }
 
@@ -36,11 +36,11 @@ public class PipeConnection {
     public CompoundTag write() {
         CompoundTag compound = new CompoundTag();
         compound.put("TargetPos", NbtUtils.writeBlockPos(to));
-        compound.putString("StyleType",style.getType().getId().toString());
-        compound.put("Style",style.write());
-        if(curveConnection!=null)
-            compound.put("Curve",curveConnection.write());
-        compound.putBoolean("PrimaryForRender",primaryForRender);
+        compound.putString("StyleType", style.getType().getId().toString());
+        compound.put("Style", style.write());
+        if (curveConnection != null)
+            compound.put("Curve", curveConnection.write());
+        compound.putBoolean("PrimaryForRender", primaryForRender);
         return compound;
     }
 }

@@ -54,7 +54,8 @@ public abstract class NavigatingBE extends CachedRenderBoundingBoxBE implements 
         }
     }
 
-    public void lazyTick() {}
+    public void lazyTick() {
+    }
 
     /**
      * Hook only these in future subclasses of LTBE
@@ -93,12 +94,14 @@ public abstract class NavigatingBE extends CachedRenderBoundingBoxBE implements 
     /**
      * Block destroyed or Chunk unloaded. Usually invalidates capabilities
      */
-    public void invalidate() {}
+    public void invalidate() {
+    }
 
     /**
      * Block destroyed or replaced. Requires Block to call ITE::onRemove
      */
-    public void destroy() {}
+    public void destroy() {
+    }
 
     @Override
     public final void saveAdditional(CompoundTag tag) {

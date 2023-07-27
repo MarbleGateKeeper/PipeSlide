@@ -17,7 +17,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<PlayerCarrierEntity>> CARRIER = register("carrier", PlayerCarrierEntity::new);
 
-    private static <T extends Entity> RegistryObject<EntityType<T>> register(String id, EntityType.EntityFactory<T> factory){
+    private static <T extends Entity> RegistryObject<EntityType<T>> register(String id, EntityType.EntityFactory<T> factory) {
         return ENTITY_TYPES.register(id, () -> EntityType.Builder.of(factory, MobCategory.MISC)
                 .sized(0.1F, 0.1F).clientTrackingRange(8).build(id));
     }

@@ -6,12 +6,10 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import plus.dragons.pipeslide.entry.ModEntityTypes;
-import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 public class PlayerCarrierEntity extends Entity {
 
@@ -32,7 +30,7 @@ public class PlayerCarrierEntity extends Entity {
         super(pEntityType, pLevel);
     }
 
-    public PlayerCarrierEntity(Level pLevel,INavigationPipeBE navigator, BlockPos nextNode) {
+    public PlayerCarrierEntity(Level pLevel, INavigationPipeBE navigator, BlockPos nextNode) {
         super(ModEntityTypes.CARRIER.get(), pLevel);
         this.navigator = navigator;
         this.nextNode = nextNode;
@@ -44,11 +42,11 @@ public class PlayerCarrierEntity extends Entity {
 
     @Override
     public void tick() {
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             if (this.lSteps > 0) {
-                double d5 = this.getX() + (this.lx - this.getX()) / (double)this.lSteps;
-                double d6 = this.getY() + (this.ly - this.getY()) / (double)this.lSteps;
-                double d7 = this.getZ() + (this.lz - this.getZ()) / (double)this.lSteps;
+                double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
+                double d6 = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
+                double d7 = this.getZ() + (this.lz - this.getZ()) / (double) this.lSteps;
                 --this.lSteps;
                 this.setPos(d5, d6, d7);
             } else {
@@ -56,18 +54,18 @@ public class PlayerCarrierEntity extends Entity {
             }
             reapplyPosition();
         } else {
-            if (getFirstPassenger() == null){
+            if (getFirstPassenger() == null) {
                 this.remove(RemovalReason.DISCARDED);
                 return;
             }
-            if(this.navigator!=null){
+            if (this.navigator != null) {
                 moveAlongPipe();
             }
         }
     }
 
-    public void moveAlongPipe(){
-        var result = navigator.navigate(this,nextNode,currentSpeed,currentT);
+    public void moveAlongPipe() {
+        var result = navigator.navigate(this, nextNode, currentSpeed, currentT);
         this.navigator = result.navigatorNext();
         this.nextNode = result.nextNode();
         this.currentT = result.t();
@@ -90,13 +88,16 @@ public class PlayerCarrierEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {}
+    protected void defineSynchedData() {
+    }
 
     @Override
-    protected void readAdditionalSaveData(@NotNull CompoundTag pCompound) {}
+    protected void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
+    }
 
     @Override
-    protected void addAdditionalSaveData(@NotNull CompoundTag pCompound) {}
+    protected void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
+    }
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {

@@ -30,33 +30,33 @@ public class PipeNodeBlockEntity extends NavigatingBE implements IPipeConnection
     @Override
     public void lazyTick() {
         super.lazyTick();
-        if(!level.isClientSide && (connectionA!=null || connectionB!=null)){
-            level.getEntitiesOfClass(Player.class,new AABB(getBlockPos().above()), player -> {
-                return !player.isSpectator() & player.getVehicle()==null;
+        if (!level.isClientSide && (connectionA != null || connectionB != null)) {
+            level.getEntitiesOfClass(Player.class, new AABB(getBlockPos()).expandTowards(0, 1, 0), player -> {
+                return !player.isSpectator() & player.getVehicle() == null;
             }).forEach(this::startPipeRide);
         }
     }
 
-    private void startPipeRide(Player player){
+    private void startPipeRide(Player player) {
         BlockPos next;
-        if(connectionA==null){
+        if (connectionA == null) {
             next = connectionB.to;
         } else {
-            if(connectionB==null){
+            if (connectionB == null) {
                 next = connectionA.to;
             } else {
                 Vec3 lookVec = player.getLookAngle();
                 Vec3 aVec = VecHelper.getCenterOf(this.getBlockPos()).vectorTo(VecHelper.getCenterOf(connectionA.to));
                 Vec3 bVec = VecHelper.getCenterOf(this.getBlockPos()).vectorTo(VecHelper.getCenterOf(connectionB.to));
-                if(aVec.dot(lookVec)>bVec.dot(lookVec)){
+                if (aVec.dot(lookVec) > bVec.dot(lookVec)) {
                     next = connectionA.to;
                 } else next = connectionB.to;
             }
         }
-        var carrier = new PlayerCarrierEntity(level,this,next);
+        var carrier = new PlayerCarrierEntity(level, this, next);
         carrier.setPos(VecHelper.getCenterOf(getBlockPos()));
         level.addFreshEntity(carrier);
-        player.startRiding(carrier,true);
+        player.startRiding(carrier, true);
     }
 
     @Override
@@ -83,19 +83,19 @@ public class PipeNodeBlockEntity extends NavigatingBE implements IPipeConnection
     public Result navigate(PlayerCarrierEntity carrier, BlockPos nextNode, float speed, float currentT) {
         var connection = pickConnection(nextNode);
 
-        if(connection==null) return new Result(null, nextNode, speed, currentT);
+        if (connection == null) return new Result(null, nextNode, speed, currentT);
 
-        Vec3 position = new Vec3(carrier.getX(),carrier.getY(),carrier.getZ());
+        Vec3 position = new Vec3(carrier.getX(), carrier.getY(), carrier.getZ());
         Vec3 nextVec3 = VecHelper.getCenterOf(nextNode);
-        double leftLength = connection.curveConnection==null? Math.sqrt(getBlockPos().distSqr(nextNode)) * (1-currentT) : connection.curveConnection.getLength() * (1-currentT);
+        double leftLength = connection.curveConnection == null ? Math.sqrt(getBlockPos().distSqr(nextNode)) * (1 - currentT) : connection.curveConnection.getLength() * (1 - currentT);
         // travelling can be handled in this navigator
-        if(leftLength>speed){
+        if (leftLength > speed) {
             // linear connection
-            if(connection.curveConnection==null){
-                Vec3 newPos = VecHelper.lerp((float) (speed/leftLength), position, nextVec3);
+            if (connection.curveConnection == null) {
+                Vec3 newPos = VecHelper.lerp((float) (speed / leftLength), position, nextVec3);
                 carrier.setPos(newPos);
                 carrier.setDeltaMovement(position.vectorTo(nextVec3).normalize().scale(speed));
-                return new Result(this, nextNode, speed, (float) (1 - (newPos.vectorTo(nextVec3).length()/Math.sqrt(getBlockPos().distSqr(nextNode)))));
+                return new Result(this, nextNode, speed, (float) (1 - (newPos.vectorTo(nextVec3).length() / Math.sqrt(getBlockPos().distSqr(nextNode)))));
             }
             // curve connection
             else {
@@ -108,13 +108,13 @@ public class PipeNodeBlockEntity extends NavigatingBE implements IPipeConnection
         }
         // travelling should be handled in next navigator
         else {
-            if(level.getBlockEntity(nextNode) instanceof INavigationPipeBE nextNavigator){
+            if (level.getBlockEntity(nextNode) instanceof INavigationPipeBE nextNavigator) {
                 carrier.setPos(nextVec3);
                 var nextNextNode = nextNavigator.getNextNode(getBlockPos());
                 carrier.setPos(nextVec3);
 
 
-                if(nextNextNode==null) {
+                if (nextNextNode == null) {
                     // No next node
                     return new Result(null, null, speed, 1);
                 } else {
@@ -131,18 +131,18 @@ public class PipeNodeBlockEntity extends NavigatingBE implements IPipeConnection
 
     @Override
     public @Nullable BlockPos getNextNode(BlockPos from) {
-        if(connectionA!=null && connectionA.to.equals(from))
-            return connectionB==null? null: connectionB.to;
-        else if(connectionB!=null && connectionB.to.equals(from))
-            return connectionA ==null? null: connectionA.to;
+        if (connectionA != null && connectionA.to.equals(from))
+            return connectionB == null ? null : connectionB.to;
+        else if (connectionB != null && connectionB.to.equals(from))
+            return connectionA == null ? null : connectionA.to;
         else return null;
     }
 
     @Nullable
-    private PipeConnection pickConnection(BlockPos next){
-        if(connectionA!=null && connectionA.to.equals(next))
+    private PipeConnection pickConnection(BlockPos next) {
+        if (connectionA != null && connectionA.to.equals(next))
             return connectionA;
-        else if(connectionB!=null && connectionB.to.equals(next))
+        else if (connectionB != null && connectionB.to.equals(next))
             return connectionB;
         else return null;
     }

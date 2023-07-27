@@ -10,6 +10,6 @@ public interface IPipeStyle {
 
     PipeStyleType<?> getType();
 
-    void fillPipeSegment(Vec3 start, Vec3 end, PoseStack poseStack, VertexConsumer consumer,int light,
+    void fillPipeSegment(Vec3 start, Vec3 end, PoseStack poseStack, VertexConsumer consumer, int light,
                          int overlay);
 }

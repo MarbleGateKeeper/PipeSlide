@@ -49,7 +49,7 @@ public class Lang {
      * @return
      */
     public static MutableComponent translateDirect(String key, Object... args) {
-        return Component.translatable(PipeSlide.MOD_ID+ "." + key, resolveBuilders(args));
+        return Component.translatable(PipeSlide.MOD_ID + "." + key, resolveBuilders(args));
     }
 
     public static String asId(String name) {
@@ -107,7 +107,7 @@ public class Lang {
 
     public static Object[] resolveBuilders(Object[] args) {
         for (int i = 0; i < args.length; i++)
-            if (args[i]instanceof LangBuilder cb)
+            if (args[i] instanceof LangBuilder cb)
                 args[i] = cb.component();
         return args;
     }

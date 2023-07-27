@@ -80,11 +80,11 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
         Vec3 end2 = VecHelper.getCenterOf(endPoints.getSecond());
         Vec3 mid = VecHelper.getCenterOf(midPoint);
 
-        if(t==1){
-            return VecHelper.bezier(end1,end2,mid,1).subtract(VecHelper.bezier(end1,end2,mid,segments-1/(float)segments)).normalize();
+        if (t == 1) {
+            return VecHelper.bezier(end1, end2, mid, 1).subtract(VecHelper.bezier(end1, end2, mid, segments - 1 / (float) segments)).normalize();
         } else {
-            int index = Math.min(segments-1,(int)Math.floor(t/(1F/segments)));
-            return VecHelper.bezier(end1,end2,mid,(index + 1)/(float)segments).subtract(VecHelper.bezier(end1,end2,mid,index/(float)segments)).normalize();
+            int index = Math.min(segments - 1, (int) Math.floor(t / (1F / segments)));
+            return VecHelper.bezier(end1, end2, mid, (index + 1) / (float) segments).subtract(VecHelper.bezier(end1, end2, mid, index / (float) segments)).normalize();
         }
     }
 
@@ -186,8 +186,8 @@ public class BezierConnection implements Iterable<BezierConnection.Segment> {
         public Segment next() {
             segment.index++;
             float t = segment.index;
-            segment.start = VecHelper.bezier(end1, end2, mid, segment.index/(float) bc.getSegmentCount());
-            segment.end = VecHelper.bezier(end1, end2, mid, (segment.index + 1)/(float) bc.getSegmentCount());
+            segment.start = VecHelper.bezier(end1, end2, mid, segment.index / (float) bc.getSegmentCount());
+            segment.end = VecHelper.bezier(end1, end2, mid, (segment.index + 1) / (float) bc.getSegmentCount());
             segment.direction = segment.start.vectorTo(segment.end).normalize()
                     .normalize();
             return segment;

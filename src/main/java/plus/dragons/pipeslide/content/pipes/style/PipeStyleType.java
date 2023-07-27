@@ -11,18 +11,18 @@ import java.util.function.Function;
 public class PipeStyleType<T extends IPipeStyle> {
     public static final Map<ResourceLocation, PipeStyleType<?>> TYPES = new HashMap<>();
     private final ResourceLocation id;
-    private final Function<CompoundTag,T> factory;
+    private final Function<CompoundTag, T> factory;
 
     public static final PipeStyleType<IPipeStyle> DEFAULT =
             register(PipeSlide.genRL("default"), (compoundTag) -> MarbleWhiteStyle.INSTANCE);
 
-    public static <T extends IPipeStyle> PipeStyleType<T> register(ResourceLocation id, Function<CompoundTag,T> factory) {
+    public static <T extends IPipeStyle> PipeStyleType<T> register(ResourceLocation id, Function<CompoundTag, T> factory) {
         PipeStyleType<T> type = new PipeStyleType<>(id, factory);
         TYPES.put(id, type);
         return type;
     }
 
-    public PipeStyleType(ResourceLocation id, Function<CompoundTag,T> factory) {
+    public PipeStyleType(ResourceLocation id, Function<CompoundTag, T> factory) {
         this.id = id;
         this.factory = factory;
     }
@@ -31,7 +31,7 @@ public class PipeStyleType<T extends IPipeStyle> {
         return id;
     }
 
-    public T fromTag(CompoundTag tag){
+    public T fromTag(CompoundTag tag) {
         return factory.apply(tag);
     }
 }

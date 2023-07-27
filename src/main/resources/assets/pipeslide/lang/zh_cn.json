@@ -1,0 +1,17 @@
+{
+  "item.pipeslide.pipe_node_connector": "管道节点链接器",
+  "block.pipeslide.pipe_node": "管道节点",
+  "block.pipeslide.pipe_curve_anchor": "管道曲线锚点",
+  "pipeslide.pipe.start_connect": "已选择一个节点",
+  "pipeslide.pipe.selection_cleared": "已清除所选节点",
+  "pipeslide.pipe.anchor_chose": "已选择曲线锚点",
+  "pipeslide.pipe.anchor_chose_again": "已重新选择曲线锚点",
+  "pipeslide.pipe.start_node_not_available": "先前所选节点已失效",
+  "pipeslide.pipe.already_connected": "该节点已到达最大连接数",
+  "pipeslide.pipe.anchor_not_available": "先前所选曲线锚点已失效",
+  "pipeslide.pipe.pipe_too_long": "距离过长，无法建立链接",
+  "pipeslide.pipe.slope_too_large": "坡度过陡，无法建立链接",
+  "pipeslide.pipe.successfully_connect": "链接已成功建立",
+  "pipeslide.pipe.not_connectable": "不是可以链接的选项",
+  "pipeslide.pipe.not_pipe_node": "不是节点"
+}

@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "minecraft:block/spruce_button" }
+    "": { "model": "pipeslide:block/pipe_curve_anchor" }
   }
 }

@@ -14,6 +14,6 @@ public class BlandEntityRenderer<T extends Entity> extends EntityRenderer<T> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(@NotNull T pEntity) {
-        return new ResourceLocation("minecraft","entity/creeper");
+        return new ResourceLocation("minecraft", "entity/creeper");
     }
 }

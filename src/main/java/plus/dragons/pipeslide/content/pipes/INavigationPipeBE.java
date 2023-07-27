@@ -15,7 +15,8 @@ public interface INavigationPipeBE {
 
     /**
      * @param navigatorNext null when not available
-     * @param nextNode null when not available
+     * @param nextNode      null when not available
      */
-    record Result(@Nullable INavigationPipeBE navigatorNext,@Nullable BlockPos nextNode, float speed, float t){}
+    record Result(@Nullable INavigationPipeBE navigatorNext, @Nullable BlockPos nextNode, float speed, float t) {
+    }
 }

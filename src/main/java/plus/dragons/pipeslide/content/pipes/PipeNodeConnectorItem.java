@@ -41,7 +41,7 @@ public class PipeNodeConnectorItem extends Item {
 
         if (!isFoil(stack)) {
             if (state.getBlock() instanceof IPipeConnectableBlock pipe && pipe.hasConnectableEnd(level, pos)) {
-                if (!level.isClientSide){
+                if (!level.isClientSide) {
                     player.displayClientMessage(Lang.translateDirect("pipe.start_connect")
                             .withStyle(ChatFormatting.GREEN), true);
                     CompoundTag compoundTag = stack.getOrCreateTag();
@@ -61,17 +61,17 @@ public class PipeNodeConnectorItem extends Item {
             return InteractionResult.SUCCESS;
         }
 
-        if(state.is(ModBlocks.PIPE_CURVE_ANCHOR.get())){
+        if (state.is(ModBlocks.PIPE_CURVE_ANCHOR.get())) {
             CompoundTag compoundTag = stack.getOrCreateTag();
-            if(compoundTag.contains("Mid")){
-                if (!level.isClientSide){
+            if (compoundTag.contains("Mid")) {
+                if (!level.isClientSide) {
                     player.displayClientMessage(Lang.translateDirect("pipe.anchor_chose_again")
                             .withStyle(ChatFormatting.GREEN), true);
                     compoundTag.put("Mid", NbtUtils.writeBlockPos(pos));
                 }
                 return InteractionResult.SUCCESS;
             } else {
-                if (!level.isClientSide){
+                if (!level.isClientSide) {
                     player.displayClientMessage(Lang.translateDirect("pipe.anchor_chose")
                             .withStyle(ChatFormatting.GREEN), true);
                     compoundTag.put("Mid", NbtUtils.writeBlockPos(pos));
@@ -80,13 +80,13 @@ public class PipeNodeConnectorItem extends Item {
             }
         }
 
-        if(state.getBlock() instanceof IPipeConnectableBlock pipe){
-            if(pipe.hasConnectableEnd(level, pos)){
+        if (state.getBlock() instanceof IPipeConnectableBlock pipe) {
+            if (pipe.hasConnectableEnd(level, pos)) {
 
                 CompoundTag compoundTag = stack.getOrCreateTag();
                 var start = NbtUtils.readBlockPos(compoundTag.getCompound("Start"));
 
-                if(start.equals(pos)){
+                if (start.equals(pos)) {
                     if (!level.isClientSide) {
                         player.displayClientMessage(Lang.translateDirect("pipe.selection_cleared").withStyle(ChatFormatting.RED), true);
                         stack.setTag(null);
@@ -96,7 +96,7 @@ public class PipeNodeConnectorItem extends Item {
                 }
 
                 var startState = level.getBlockState(start);
-                if(!(startState.getBlock() instanceof IPipeConnectableBlock pipe2) || !pipe2.hasConnectableEnd(level, pos)) {
+                if (!(startState.getBlock() instanceof IPipeConnectableBlock pipe2) || !pipe2.hasConnectableEnd(level, pos)) {
                     if (!level.isClientSide) {
                         player.displayClientMessage(Lang.translateDirect("pipe.start_node_not_available").withStyle(ChatFormatting.RED), true);
                         stack.setTag(null);
@@ -104,18 +104,18 @@ public class PipeNodeConnectorItem extends Item {
                     return InteractionResult.FAIL;
                 }
 
-                if(!((IPipeConnectableBlock) startState.getBlock()).canConnectTo(level,start,pos)){
+                if (!((IPipeConnectableBlock) startState.getBlock()).canConnectTo(level, start, pos)) {
                     if (!level.isClientSide) {
                         player.displayClientMessage(Lang.translateDirect("pipe.already_connected").withStyle(ChatFormatting.RED), true);
                     }
                     return InteractionResult.FAIL;
                 }
 
-                if(compoundTag.contains("Mid")){
+                if (compoundTag.contains("Mid")) {
                     var mid = NbtUtils.readBlockPos(compoundTag.getCompound("Mid"));
                     var midState = level.getBlockState(mid);
 
-                    if(!midState.is(ModBlocks.PIPE_CURVE_ANCHOR.get())) {
+                    if (!midState.is(ModBlocks.PIPE_CURVE_ANCHOR.get())) {
                         if (!level.isClientSide) {
                             player.displayClientMessage(Lang.translateDirect("pipe.anchor_not_available").withStyle(ChatFormatting.RED), true);
                             stack.setTag(null);
@@ -123,19 +123,19 @@ public class PipeNodeConnectorItem extends Item {
                         return InteractionResult.FAIL;
                     }
 
-                    BezierConnection bezier = new BezierConnection(Couple.create(start,pos),mid);
-                    if(bezier.getLength()>32){
+                    BezierConnection bezier = new BezierConnection(Couple.create(start, pos), mid);
+                    if (bezier.getLength() > 32) {
                         if (!level.isClientSide)
-                            player.displayClientMessage(Lang.translateDirect("pipe.pipe_to_long")
+                            player.displayClientMessage(Lang.translateDirect("pipe.pipe_too_long")
                                     .withStyle(ChatFormatting.RED), true);
                         return InteractionResult.FAIL;
                     }
-                    for(var seg:bezier){
+                    for (var seg : bezier) {
                         // TODO not work as expected
                         var derivative = seg.direction;
-                        if(Math.sqrt(Math.pow(Math.abs(derivative.x),2)+Math.pow(Math.abs(derivative.z),2))<Math.abs(derivative.y)){
+                        if (Math.sqrt(Math.pow(Math.abs(derivative.x), 2) + Math.pow(Math.abs(derivative.z), 2)) < Math.abs(derivative.y)) {
                             if (!level.isClientSide)
-                                player.displayClientMessage(Lang.translateDirect("pipe.slope_to_large")
+                                player.displayClientMessage(Lang.translateDirect("pipe.slope_too_large")
                                         .withStyle(ChatFormatting.RED), true);
                             return InteractionResult.FAIL;
                         }
@@ -143,17 +143,17 @@ public class PipeNodeConnectorItem extends Item {
 
                 } else {
                     var lengthSqr = start.distSqr(pos);
-                    if(lengthSqr>Math.pow(32,2)){
+                    if (lengthSqr > Math.pow(32, 2)) {
                         if (!level.isClientSide)
-                            player.displayClientMessage(Lang.translateDirect("pipe.pipe_to_long")
+                            player.displayClientMessage(Lang.translateDirect("pipe.pipe_too_long")
                                     .withStyle(ChatFormatting.RED), true);
                         return InteractionResult.FAIL;
                     }
                     var heightDiff = start.getY() - pos.getY();
-                    var horizontalDistSqr = start.distSqr(new BlockPos(pos.getX(),start.getY(),pos.getZ()));
-                    if(Math.pow(heightDiff,2)>horizontalDistSqr){
+                    var horizontalDistSqr = start.distSqr(new BlockPos(pos.getX(), start.getY(), pos.getZ()));
+                    if (Math.pow(heightDiff, 2) > horizontalDistSqr) {
                         if (!level.isClientSide)
-                            player.displayClientMessage(Lang.translateDirect("pipe.slope_to_large")
+                            player.displayClientMessage(Lang.translateDirect("pipe.slope_too_large")
                                     .withStyle(ChatFormatting.RED), true);
                         return InteractionResult.FAIL;
                     }
@@ -162,10 +162,10 @@ public class PipeNodeConnectorItem extends Item {
                 if (level.isClientSide)
                     return InteractionResult.SUCCESS;
 
-                BlockPos mid = compoundTag.contains("Mid")?NbtUtils.readBlockPos(compoundTag.getCompound("Mid")):null;
+                BlockPos mid = compoundTag.contains("Mid") ? NbtUtils.readBlockPos(compoundTag.getCompound("Mid")) : null;
                 Direction facing = pContext.getHorizontalDirection();
-                ((IPipeConnectableBlock) startState.getBlock()).addPipeConnection(level,start,pos,facing,true,mid);
-                ((IPipeConnectableBlock) state.getBlock()).addPipeConnection(level,pos,start,facing,false,mid);
+                ((IPipeConnectableBlock) startState.getBlock()).addPipeConnection(level, start, pos, facing, true, mid);
+                ((IPipeConnectableBlock) state.getBlock()).addPipeConnection(level, pos, start, facing, false, mid);
 
                 stack = player.getMainHandItem();
                 if (stack.is(ModItems.PIPE_NODE_CONNECTOR.get())) {
