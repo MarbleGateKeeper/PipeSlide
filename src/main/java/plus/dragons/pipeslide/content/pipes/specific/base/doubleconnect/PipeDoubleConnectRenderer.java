@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes.specific.standard;
+package plus.dragons.pipeslide.content.pipes.specific.base.doubleconnect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -8,14 +8,14 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import plus.dragons.pipeslide.content.pipes.PipeConnectionProviderRenderer;
+import plus.dragons.pipeslide.content.pipes.specific.node.PipeNodeBlockEntity;
 
-public class PipeNodeRenderer extends PipeConnectionProviderRenderer<PipeNodeBlockEntity> {
+public class PipeDoubleConnectRenderer<T extends PipeDoubleConnectBlockEntity> extends PipeConnectionProviderRenderer<T> {
 
-    public PipeNodeRenderer(BlockEntityRendererProvider.Context context) {
-    }
+    public PipeDoubleConnectRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
-    protected void renderSafe(PipeNodeBlockEntity te, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light,
+    protected void renderSafe(T te, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light,
                               int overlay) {
         Level level = te.getLevel();
         VertexConsumer vb = buffer.getBuffer(RenderType.cutoutMipped());
@@ -29,7 +29,7 @@ public class PipeNodeRenderer extends PipeConnectionProviderRenderer<PipeNodeBlo
     }
 
     @Override
-    public boolean shouldRenderOffScreen(@NotNull PipeNodeBlockEntity pBlockEntity) {
+    public boolean shouldRenderOffScreen(@NotNull PipeDoubleConnectBlockEntity pBlockEntity) {
         return true;
     }
 

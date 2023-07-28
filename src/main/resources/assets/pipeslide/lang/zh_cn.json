@@ -1,5 +1,6 @@
 {
   "item.pipeslide.pipe_node_connector": "管道节点链接器",
+  "block.pipeslide.pipe_platform": "管道站台",
   "block.pipeslide.pipe_node": "管道节点",
   "block.pipeslide.pipe_curve_anchor": "管道曲线锚点",
   "pipeslide.pipe.start_connect": "已选择一个节点",

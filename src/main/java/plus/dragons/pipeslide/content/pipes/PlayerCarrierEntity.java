@@ -17,7 +17,6 @@ public class PlayerCarrierEntity extends Entity {
     private BlockPos nextNode = null;
     private float currentT;
     private float currentSpeed;
-    private boolean done;
     private int lSteps;
     private double lx;
     private double ly;
@@ -35,7 +34,6 @@ public class PlayerCarrierEntity extends Entity {
         this.navigator = navigator;
         this.nextNode = nextNode;
         this.currentT = 0;
-        //this.currentSpeed = 0;
         this.currentSpeed = 8F / 20;
     }
 

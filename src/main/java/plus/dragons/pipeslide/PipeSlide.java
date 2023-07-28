@@ -18,7 +18,7 @@ public class PipeSlide {
 
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
-        ModBlockEntities.BLOKC_ENTITIES.register(modEventBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModCreativeModeTab.TABS.register(modEventBus);
 

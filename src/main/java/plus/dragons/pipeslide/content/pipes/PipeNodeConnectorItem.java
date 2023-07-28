@@ -96,7 +96,7 @@ public class PipeNodeConnectorItem extends Item {
                 }
 
                 var startState = level.getBlockState(start);
-                if (!(startState.getBlock() instanceof IPipeConnectableBlock pipe2) || !pipe2.hasConnectableEnd(level, pos)) {
+                if (!(startState.getBlock() instanceof IPipeConnectableBlock pipe2) || !pipe2.hasConnectableEnd(level, start)) {
                     if (!level.isClientSide) {
                         player.displayClientMessage(Lang.translateDirect("pipe.start_node_not_available").withStyle(ChatFormatting.RED), true);
                         stack.setTag(null);

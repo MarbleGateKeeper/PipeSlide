@@ -18,6 +18,7 @@ public class ModCreativeModeTab {
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.PIPE_NODE_CONNECTOR.get());
                 output.accept(ModItems.PIPE_NODE.get());
+                output.accept(ModItems.PIPE_PLATFORM.get());
                 output.accept(ModItems.PIPE_CURVE_ANCHOR.get());
             }).build());
 }

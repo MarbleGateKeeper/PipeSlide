@@ -1,40 +1,28 @@
-package plus.dragons.pipeslide.content.pipes.specific.standard;
+package plus.dragons.pipeslide.content.pipes.specific.base.doubleconnect;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.pipeslide.content.pipes.BezierConnection;
 import plus.dragons.pipeslide.content.pipes.IPipeConnectableBlock;
 import plus.dragons.pipeslide.content.pipes.PipeConnection;
-import plus.dragons.pipeslide.entry.ModBlockEntities;
 import plus.dragons.pipeslide.foundation.block.IEntityBlock;
 import plus.dragons.pipeslide.foundation.block.ProperWaterloggedBlock;
 import plus.dragons.pipeslide.foundation.utility.Couple;
 
-public class PipeNodeNodeBlock extends Block implements IEntityBlock<PipeNodeBlockEntity>, ProperWaterloggedBlock, IPipeConnectableBlock {
-    public PipeNodeNodeBlock() {
-        super(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).noCollission().noOcclusion().strength(128.0f).isSuffocating(($1,$2,$3)->false).isViewBlocking(($1,$2,$3)->false));
+public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEntity> extends Block implements ProperWaterloggedBlock, IPipeConnectableBlock<T> {
+    public PipeDoubleConnectBlock() {
+        super(Properties.of().mapColor(MapColor.NONE).noCollission().noOcclusion().strength(128.0f).isSuffocating(($1, $2, $3)->false).isViewBlocking(($1, $2, $3)->false));
     }
 
-    @Override
-    public Class<PipeNodeBlockEntity> getTileEntityClass() {
-        return PipeNodeBlockEntity.class;
-    }
-
-    @Override
-    public BlockEntityType<? extends PipeNodeBlockEntity> getTileEntityType() {
-        return ModBlockEntities.PIPE_NODE.get();
+    public PipeDoubleConnectBlock(Properties pProperties) {
+        super(pProperties);
     }
 
     @Override
@@ -96,5 +84,10 @@ public class PipeNodeNodeBlock extends Block implements IEntityBlock<PipeNodeBlo
     @Override
     public boolean propagatesSkylightDown(@NotNull BlockState pState, @NotNull BlockGetter pReader, @NotNull BlockPos pPos) {
         return true;
+    }
+
+    @Override
+    public float getShadeBrightness(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
+        return 1.0F;
     }
 }

@@ -1,8 +1,8 @@
-package plus.dragons.pipeslide.content.pipes.specific.standard;
+package plus.dragons.pipeslide.content.pipes.specific.base.doubleconnect;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -10,53 +10,19 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.pipeslide.content.pipes.*;
-import plus.dragons.pipeslide.entry.ModBlockEntities;
 import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipeNodeBlockEntity extends NavigatingBE implements IPipeConnectionProviderBE {
+public abstract class PipeDoubleConnectBlockEntity extends NavigatingBE implements IPipeConnectionProviderBE {
     @Nullable
     public PipeConnection connectionA;
     @Nullable
     public PipeConnection connectionB;
 
-    public PipeNodeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.PIPE_NODE.get(), pos, state);
-        setLazyTickRate(20);
-    }
-
-    @Override
-    public void lazyTick() {
-        super.lazyTick();
-        if (!level.isClientSide && (connectionA != null || connectionB != null)) {
-            level.getEntitiesOfClass(Player.class, new AABB(getBlockPos()).expandTowards(0, 1, 0), player -> {
-                return !player.isSpectator() & player.getVehicle() == null;
-            }).forEach(this::startPipeRide);
-        }
-    }
-
-    private void startPipeRide(Player player) {
-        BlockPos next;
-        if (connectionA == null) {
-            next = connectionB.to;
-        } else {
-            if (connectionB == null) {
-                next = connectionA.to;
-            } else {
-                Vec3 lookVec = player.getLookAngle();
-                Vec3 aVec = VecHelper.getCenterOf(this.getBlockPos()).vectorTo(VecHelper.getCenterOf(connectionA.to));
-                Vec3 bVec = VecHelper.getCenterOf(this.getBlockPos()).vectorTo(VecHelper.getCenterOf(connectionB.to));
-                if (aVec.dot(lookVec) > bVec.dot(lookVec)) {
-                    next = connectionA.to;
-                } else next = connectionB.to;
-            }
-        }
-        var carrier = new PlayerCarrierEntity(level, this, next);
-        carrier.setPos(VecHelper.getCenterOf(getBlockPos()));
-        level.addFreshEntity(carrier);
-        player.startRiding(carrier, true);
+    public PipeDoubleConnectBlockEntity(BlockEntityType<? extends PipeDoubleConnectBlockEntity> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Override

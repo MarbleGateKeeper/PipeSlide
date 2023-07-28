@@ -3,9 +3,11 @@ package plus.dragons.pipeslide.content.pipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.pipeslide.foundation.block.IEntityBlock;
 
-public interface IPipeConnectableBlock {
+public interface IPipeConnectableBlock<T extends BlockEntity> extends IEntityBlock<T> {
     boolean hasConnectableEnd(BlockGetter world, BlockPos pos);
 
     boolean canConnectTo(BlockGetter world, BlockPos pos, BlockPos connectTarget);
