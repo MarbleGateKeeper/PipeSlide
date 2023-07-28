@@ -47,10 +47,14 @@ public abstract class PipeDoubleConnectBlockEntity extends NavigatingBE implemen
 
     @Override
     public Result navigate(PlayerCarrierEntity carrier, BlockPos nextNode, float speed, float currentT) {
+        // accelerate
+        if(speed<carrier.getMaxSpeed()){
+            speed = Math.min(speed+acceleration(),carrier.getMaxSpeed());
+        } else if(speed>carrier.getMaxSpeed()){
+            speed = Math.max(speed-acceleration(),carrier.getMaxSpeed());
+        }
         var connection = pickConnection(nextNode);
-
         if (connection == null) return new Result(null, nextNode, speed, currentT);
-
         Vec3 position = new Vec3(carrier.getX(), carrier.getY(), carrier.getZ());
         Vec3 nextVec3 = VecHelper.getCenterOf(nextNode);
         double leftLength = connection.curveConnection == null ? Math.sqrt(getBlockPos().distSqr(nextNode)) * (1 - currentT) : connection.curveConnection.getLength() * (1 - currentT);
@@ -94,6 +98,10 @@ public abstract class PipeDoubleConnectBlockEntity extends NavigatingBE implemen
 
     }
 
+
+    private static float acceleration(){
+        return 0.002F;
+    }
 
     @Override
     public @Nullable BlockPos getNextNode(BlockPos from) {

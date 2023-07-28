@@ -34,9 +34,16 @@ public class PlayerCarrierEntity extends Entity {
         this.navigator = navigator;
         this.nextNode = nextNode;
         this.currentT = 0;
-        this.currentSpeed = 8F / 20;
+        this.currentSpeed = getInitialSpeed();
     }
 
+    private static float getInitialSpeed(){
+        return 0.15F ;
+    }
+
+    public float getMaxSpeed() {
+        return this.isInWater() ? 0.425F: 0.5F;
+    }
 
     @Override
     public void tick() {
@@ -69,10 +76,6 @@ public class PlayerCarrierEntity extends Entity {
         this.currentT = result.t();
         this.currentSpeed = result.speed();
 
-    }
-
-    protected double getMaxSpeed() {
-        return (this.isInWater() ? 7.5 : 10.0D) / 20.0D;
     }
 
     @Override
