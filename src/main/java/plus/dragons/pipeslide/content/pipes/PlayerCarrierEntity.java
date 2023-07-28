@@ -4,15 +4,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import plus.dragons.pipeslide.entry.ModEntityTypes;
 
 public class PlayerCarrierEntity extends Entity {
-
+    private static final EntityDataAccessor<Float> CURRENT_SPEED = SynchedEntityData.defineId(PlayerCarrierEntity.class, EntityDataSerializers.FLOAT);
     private INavigationPipeBE navigator = null;
     private BlockPos nextNode = null;
     private float currentT;
@@ -37,12 +41,21 @@ public class PlayerCarrierEntity extends Entity {
         this.currentSpeed = getInitialSpeed();
     }
 
+    @Override
+    protected void defineSynchedData() {
+        this.getEntityData().define(CURRENT_SPEED, getInitialSpeed());
+    }
+
     private static float getInitialSpeed(){
         return 0.15F ;
     }
 
     public float getMaxSpeed() {
         return this.isInWater() ? 0.425F: 0.5F;
+    }
+
+    public float getSyncCurrentSpeed() {
+        return getEntityData().get(CURRENT_SPEED);
     }
 
     @Override
@@ -74,22 +87,15 @@ public class PlayerCarrierEntity extends Entity {
         this.navigator = result.navigatorNext();
         this.nextNode = result.nextNode();
         this.currentT = result.t();
+        if(result.speed()!=getSyncCurrentSpeed()){
+            getEntityData().set(CURRENT_SPEED,result.speed());
+        }
         this.currentSpeed = result.speed();
-
     }
 
     @Override
     public boolean canCollideWith(@NotNull Entity pEntity) {
         return false;
-    }
-
-    @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    @Override
-    protected void defineSynchedData() {
     }
 
     @Override
@@ -101,7 +107,7 @@ public class PlayerCarrierEntity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -127,5 +133,13 @@ public class PlayerCarrierEntity extends Entity {
         this.lzd = pZ;
         this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
     }
+
+    public static void modifyFOV(ComputeFovModifierEvent event){
+        if(event.getPlayer().getVehicle() instanceof PlayerCarrierEntity carrier){
+            float mul = ((carrier.getSyncCurrentSpeed() - getInitialSpeed()) / (carrier.getMaxSpeed() - getInitialSpeed())) + 1;
+            event.setNewFovModifier(event.getNewFovModifier()*mul);
+        }
+    }
+
 
 }
