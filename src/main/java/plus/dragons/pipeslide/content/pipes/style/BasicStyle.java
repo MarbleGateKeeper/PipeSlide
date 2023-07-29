@@ -5,20 +5,18 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 public class BasicStyle implements IPipeStyle {
     private static final ResourceLocation WHITE_CONCRETE = new ResourceLocation("block/white_concrete");
-    private final ResourceLocation texture;
     public static BasicStyle createDefault(){
-        return new BasicStyle(WHITE_CONCRETE);
-    }
-    public BasicStyle(ResourceLocation texture) {
-        this.texture = texture;
+        return new BasicStyle();
     }
 
     @Override
@@ -37,7 +35,7 @@ public class BasicStyle implements IPipeStyle {
 
         var direction = start.vectorTo(end).normalize();
         var matrix = poseStack.last().pose();
-        var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
+        var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(WHITE_CONCRETE);
 
         Vec3 absEnd = start.vectorTo(end);
 
@@ -47,10 +45,13 @@ public class BasicStyle implements IPipeStyle {
         float length = (float) absEnd.length();
 
         Vec3 frontFaceNormal = direction.scale(-1);
-        Vec3 leftFaceNormal = new Vec3(frontFaceNormal.z, frontFaceNormal.x, frontFaceNormal.y);
-        Vec3 rightFaceNormal = leftFaceNormal.scale(-1);
-        Vec3 upFaceNormal = direction.cross(leftFaceNormal).normalize();
-        Vec3 downFaceNormal = direction.cross(rightFaceNormal).normalize();
+        Vec3 downFaceNormal = frontFaceNormal.cross(VecHelper.axisAlingedPlaneOf(Direction.DOWN)).normalize().cross(frontFaceNormal).normalize();
+        if(downFaceNormal.length()<0.8f){
+            downFaceNormal = frontFaceNormal.cross(VecHelper.axisAlingedPlaneOf(Direction.WEST)).normalize().cross(frontFaceNormal).normalize();
+        }
+        Vec3 upFaceNormal = downFaceNormal.scale(-1).normalize();
+        Vec3 rightFaceNormal = frontFaceNormal.cross(downFaceNormal).normalize();
+        Vec3 leftFaceNormal = rightFaceNormal.scale(-1);
 
         Vec3 extendFront = frontFaceNormal.scale(extend);
         Vec3 extendBack = direction.scale(extend);

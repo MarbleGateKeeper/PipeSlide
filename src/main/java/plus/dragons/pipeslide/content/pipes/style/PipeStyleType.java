@@ -14,7 +14,7 @@ public class PipeStyleType<T extends IPipeStyle> {
     private final Function<CompoundTag, T> factory;
 
     public static final PipeStyleType<IPipeStyle> DEFAULT =
-            register(PipeSlide.genRL("default"), (compoundTag) -> new BasicStyle(new ResourceLocation(compoundTag.getString("Texture"))));
+            register(PipeSlide.genRL("default"), (compoundTag) -> BasicStyle.createDefault());
 
     public static <T extends IPipeStyle> PipeStyleType<T> register(ResourceLocation id, Function<CompoundTag, T> factory) {
         PipeStyleType<T> type = new PipeStyleType<>(id, factory);
