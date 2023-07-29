@@ -8,7 +8,7 @@ public interface INavigationPipeBE {
     /**
      * Return next T
      */
-    Result navigate(PlayerCarrierEntity carrier, BlockPos nextNode, float speed, float currentT);
+    Result navigate(CarrierEntity carrier, BlockPos nextNode, float speed, float currentT);
 
     @Nullable
     BlockPos getNextNode(BlockPos from);

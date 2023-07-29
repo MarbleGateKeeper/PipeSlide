@@ -15,8 +15,8 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import plus.dragons.pipeslide.entry.ModEntityTypes;
 
-public class PlayerCarrierEntity extends Entity {
-    private static final EntityDataAccessor<Float> CURRENT_SPEED = SynchedEntityData.defineId(PlayerCarrierEntity.class, EntityDataSerializers.FLOAT);
+public class CarrierEntity extends Entity {
+    private static final EntityDataAccessor<Float> CURRENT_SPEED = SynchedEntityData.defineId(CarrierEntity.class, EntityDataSerializers.FLOAT);
     private INavigationPipeBE navigator = null;
     private BlockPos nextNode = null;
     private float currentT;
@@ -29,11 +29,11 @@ public class PlayerCarrierEntity extends Entity {
     private double lyd;
     private double lzd;
 
-    public PlayerCarrierEntity(EntityType<?> pEntityType, Level pLevel) {
+    public CarrierEntity(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public PlayerCarrierEntity(Level pLevel, INavigationPipeBE navigator, BlockPos nextNode) {
+    public CarrierEntity(Level pLevel, INavigationPipeBE navigator, BlockPos nextNode) {
         super(ModEntityTypes.CARRIER.get(), pLevel);
         this.navigator = navigator;
         this.nextNode = nextNode;
@@ -50,8 +50,8 @@ public class PlayerCarrierEntity extends Entity {
         return 0.15F ;
     }
 
-    public float getMaxSpeed() {
-        return this.isInWater() ? 0.425F: 0.5F;
+    public float getStandardSpeed() {
+        return 0.5F;
     }
 
     public float getSyncCurrentSpeed() {
@@ -135,8 +135,8 @@ public class PlayerCarrierEntity extends Entity {
     }
 
     public static void modifyFOV(ComputeFovModifierEvent event){
-        if(event.getPlayer().getVehicle() instanceof PlayerCarrierEntity carrier){
-            float mul = ((carrier.getSyncCurrentSpeed() - getInitialSpeed()) / (carrier.getMaxSpeed() - getInitialSpeed())) + 1;
+        if(event.getPlayer().getVehicle() instanceof CarrierEntity carrier){
+            float mul = ((carrier.getSyncCurrentSpeed() - getInitialSpeed()) / (carrier.getStandardSpeed() - getInitialSpeed())) * 1.5f + 1;
             event.setNewFovModifier(event.getNewFovModifier()*mul);
         }
     }

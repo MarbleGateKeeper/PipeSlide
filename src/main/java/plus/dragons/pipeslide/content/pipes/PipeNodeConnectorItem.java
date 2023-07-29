@@ -124,14 +124,13 @@ public class PipeNodeConnectorItem extends Item {
                     }
 
                     BezierConnection bezier = new BezierConnection(Couple.create(start, pos), mid);
-                    if (bezier.getLength() > 32) {
+                    if (bezier.getLength() > 64) {
                         if (!level.isClientSide)
                             player.displayClientMessage(Lang.translateDirect("pipe.pipe_too_long")
                                     .withStyle(ChatFormatting.RED), true);
                         return InteractionResult.FAIL;
                     }
-                    for (var seg : bezier) {
-                        // TODO not work as expected
+                    /*for (var seg : bezier) {
                         var derivative = seg.direction;
                         if (Math.sqrt(Math.pow(Math.abs(derivative.x), 2) + Math.pow(Math.abs(derivative.z), 2)) < Math.abs(derivative.y)) {
                             if (!level.isClientSide)
@@ -139,24 +138,24 @@ public class PipeNodeConnectorItem extends Item {
                                         .withStyle(ChatFormatting.RED), true);
                             return InteractionResult.FAIL;
                         }
-                    }
+                    }*/
 
                 } else {
                     var lengthSqr = start.distSqr(pos);
-                    if (lengthSqr > Math.pow(32, 2)) {
+                    if (lengthSqr > Math.pow(64, 2)) {
                         if (!level.isClientSide)
                             player.displayClientMessage(Lang.translateDirect("pipe.pipe_too_long")
                                     .withStyle(ChatFormatting.RED), true);
                         return InteractionResult.FAIL;
                     }
-                    var heightDiff = start.getY() - pos.getY();
+                    /*var heightDiff = start.getY() - pos.getY();
                     var horizontalDistSqr = start.distSqr(new BlockPos(pos.getX(), start.getY(), pos.getZ()));
                     if (Math.pow(heightDiff, 2) > horizontalDistSqr) {
                         if (!level.isClientSide)
                             player.displayClientMessage(Lang.translateDirect("pipe.slope_too_large")
                                     .withStyle(ChatFormatting.RED), true);
                         return InteractionResult.FAIL;
-                    }
+                    }*/
                 }
 
                 if (level.isClientSide)

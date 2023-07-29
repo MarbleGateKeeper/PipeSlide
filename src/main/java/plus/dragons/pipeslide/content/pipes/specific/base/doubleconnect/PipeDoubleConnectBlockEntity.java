@@ -46,12 +46,10 @@ public abstract class PipeDoubleConnectBlockEntity extends NavigatingBE implemen
     }
 
     @Override
-    public Result navigate(PlayerCarrierEntity carrier, BlockPos nextNode, float speed, float currentT) {
+    public Result navigate(CarrierEntity carrier, BlockPos nextNode, float speed, float currentT) {
         // accelerate
-        if(speed<carrier.getMaxSpeed()){
-            speed = Math.min(speed+acceleration(),carrier.getMaxSpeed());
-        } else if(speed>carrier.getMaxSpeed()){
-            speed = Math.max(speed-acceleration(),carrier.getMaxSpeed());
+        if(speed<carrier.getStandardSpeed()){
+            speed = Math.min(speed+acceleration(),carrier.getStandardSpeed());
         }
         var connection = pickConnection(nextNode);
         if (connection == null) return new Result(null, nextNode, speed, currentT);

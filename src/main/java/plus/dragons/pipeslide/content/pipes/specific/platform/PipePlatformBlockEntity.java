@@ -5,7 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import plus.dragons.pipeslide.content.pipes.PlayerCarrierEntity;
+import plus.dragons.pipeslide.content.pipes.CarrierEntity;
 import plus.dragons.pipeslide.content.pipes.specific.base.doubleconnect.PipeDoubleConnectBlockEntity;
 import plus.dragons.pipeslide.entry.ModBlockEntities;
 import plus.dragons.pipeslide.foundation.utility.VecHelper;
@@ -42,7 +42,7 @@ public class PipePlatformBlockEntity extends PipeDoubleConnectBlockEntity {
                 } else next = connectionB.to;
             }
         }
-        var carrier = new PlayerCarrierEntity(level, this, next);
+        var carrier = new CarrierEntity(level, this, next);
         carrier.setPos(VecHelper.getCenterOf(getBlockPos()));
         level.addFreshEntity(carrier);
         player.startRiding(carrier, true);

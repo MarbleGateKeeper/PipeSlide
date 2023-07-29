@@ -9,13 +9,13 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.pipeslide.PipeSlide;
-import plus.dragons.pipeslide.content.pipes.PlayerCarrierEntity;
+import plus.dragons.pipeslide.content.pipes.CarrierEntity;
 import plus.dragons.pipeslide.foundation.client.renderer.BlandEntityRenderer;
 
 public class ModEntityTypes {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, PipeSlide.MOD_ID);
 
-    public static final RegistryObject<EntityType<PlayerCarrierEntity>> CARRIER = register("carrier", PlayerCarrierEntity::new);
+    public static final RegistryObject<EntityType<CarrierEntity>> CARRIER = register("carrier", CarrierEntity::new);
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String id, EntityType.EntityFactory<T> factory) {
         return ENTITY_TYPES.register(id, () -> EntityType.Builder.of(factory, MobCategory.MISC)
