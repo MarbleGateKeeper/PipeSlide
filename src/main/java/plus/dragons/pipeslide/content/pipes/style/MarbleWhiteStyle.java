@@ -17,7 +17,7 @@ public class MarbleWhiteStyle implements IPipeStyle {
 
     public static IPipeStyle INSTANCE = new MarbleWhiteStyle();
 
-    public static final ResourceLocation IRON_BLOCK = new ResourceLocation("block/iron_block");
+    public static final ResourceLocation WHITE_CONCRETE = new ResourceLocation("block/white_concrete");
 
     @Override
     public CompoundTag write() {
@@ -35,7 +35,7 @@ public class MarbleWhiteStyle implements IPipeStyle {
 
         var direction = start.vectorTo(end).normalize();
         var matrix = poseStack.last().pose();
-        var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(IRON_BLOCK);
+        var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(WHITE_CONCRETE);
 
         Vec3 absEnd = start.vectorTo(end);
 
