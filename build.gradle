@@ -57,10 +57,20 @@ mixin {
     debug.verbose = true
     debug.export = true
 }
-
+repositories{ // Shimmer
+    maven {
+        name "firstdarkMavenSnapshots"
+        url "https://maven.firstdarkdev.xyz/snapshots"
+    }
+}
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation fg.deobf("com.lowdragmc.shimmer:Shimmer-forge:${shimmer_minecraft_version}-${shimmer_version}") { transitive = false }
+
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+
+
 }
 jar {
     manifest {

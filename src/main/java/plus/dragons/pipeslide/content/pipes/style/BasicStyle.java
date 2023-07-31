@@ -1,8 +1,11 @@
 package plus.dragons.pipeslide.content.pipes.style;
 
+import com.lowdragmc.shimmer.client.postprocessing.PostProcessing;
+import com.lowdragmc.shimmer.client.shader.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
@@ -34,7 +37,6 @@ public class BasicStyle implements IPipeStyle {
                                 int overlay) {
 
         var direction = start.vectorTo(end).normalize();
-        var matrix = poseStack.last().pose();
         var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(WHITE_CONCRETE);
 
         Vec3 absEnd = start.vectorTo(end);
@@ -69,13 +71,22 @@ public class BasicStyle implements IPipeStyle {
         Vec3 back3 = absEnd.add(extendBack).add(downWidth).add(leftWidth);
         Vec3 back4 = absEnd.add(extendBack).add(downWidth).add(rightWidth);
 
-        fillFrontQuad(consumer, matrix, atlas, front1, front2, front3, front4, frontFaceNormal, light);
-        fillFrontQuad(consumer, matrix, atlas, back2, back1, back4, back3, direction, light);
+        // a MultiBufferSource for entity or BlockEntityRenderer, render during this will support texture/tindex bloom setting
+        PoseStack finalStack = RenderUtils.copyPoseStack(poseStack);
+        var matrix = finalStack.last().pose();// we provide a way to copy the poststack
+        Vec3 finalDownFaceNormal = downFaceNormal;
+        PostProcessing.BLOOM_UNREAL.postEntityForce(bufferSource -> {  //must use the bufferSource provided by us
+            VertexConsumer consumer2 = bufferSource.getBuffer(RenderType.cutout()); //must use the bufferSource provided by us
+            fillFrontQuad(consumer2, matrix, atlas, front1, front2, front3, front4, frontFaceNormal, light);
+            fillFrontQuad(consumer2, matrix, atlas, back2, back1, back4, back3, direction, light);
 
-        fillSideQuad(consumer, matrix, atlas, front1, back1, back2, front2, direction, upFaceNormal, width, length, light);
-        fillSideQuad(consumer, matrix, atlas, front3, back3, back4, front4, direction, downFaceNormal, width, length, light);
-        fillSideQuad(consumer, matrix, atlas, back1, front1, front4, back4, frontFaceNormal, leftFaceNormal, width, length, light);
-        fillSideQuad(consumer, matrix, atlas, front2, back2, back3, front3, direction, rightFaceNormal, width, length, light);
+            fillSideQuad(consumer2, matrix, atlas, front1, back1, back2, front2, direction, upFaceNormal, width, length, light);
+            fillSideQuad(consumer2, matrix, atlas, front3, back3, back4, front4, direction, finalDownFaceNormal, width, length, light);
+            fillSideQuad(consumer2, matrix, atlas, back1, front1, front4, back4, frontFaceNormal, leftFaceNormal, width, length, light);
+            fillSideQuad(consumer2, matrix, atlas, front2, back2, back3, front3, direction, rightFaceNormal, width, length, light);
+        });
+
+
     }
 
     private void fillFrontQuad(VertexConsumer consumer, Matrix4f matrix, TextureAtlasSprite atlas, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 p4, Vec3 faceNormal, int light) {

@@ -77,11 +77,6 @@ public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEnt
     }
 
     @Override
-    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return 15;
-    }
-
-    @Override
     public boolean propagatesSkylightDown(@NotNull BlockState pState, @NotNull BlockGetter pReader, @NotNull BlockPos pPos) {
         return true;
     }
