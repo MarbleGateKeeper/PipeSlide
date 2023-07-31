@@ -65,9 +65,7 @@ repositories{ // Shimmer
 }
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
     implementation fg.deobf("com.lowdragmc.shimmer:Shimmer-forge:${shimmer_minecraft_version}-${shimmer_version}") { transitive = false }
-
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
 

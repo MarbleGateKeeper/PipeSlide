@@ -3,7 +3,10 @@
   "package": "plus.dragons.pipeslide.foundation.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
-  "mixins": [],
+  "mixins": [
+    "BoatItemAccessor",
+    "MinecartItemAccessor"
+  ],
   "server": [],
   "client": [],
   "injectors": {
