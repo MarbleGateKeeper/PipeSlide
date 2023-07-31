@@ -62,7 +62,7 @@ public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEnt
             be.connectionB = connection;
             be.notifyUpdate();
         } else {
-            throw new RuntimeException("PipeNode " + be + " at " + pos + " cannot attack more connection");
+            throw new RuntimeException("PipeNode " + be + " at " + pos + " cannot attach more connection");
         }
     }
 
