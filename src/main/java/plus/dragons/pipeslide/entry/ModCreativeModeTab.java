@@ -13,12 +13,16 @@ public class ModCreativeModeTab {
     // PIPE
     public static final RegistryObject<CreativeModeTab> PIPE_NODE = TABS.register("general", () -> CreativeModeTab.builder()
             .icon(() -> ModItems.PIPE_NODE_CONNECTOR.get().getDefaultInstance())
-            .title(Component.literal("PipeSlide"))
+            .title(Component.translatable("creativeModeTab.pipeslide.general"))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.PIPE_NODE_CONNECTOR.get());
                 output.accept(ModItems.PIPE_NODE.get());
-                output.accept(ModItems.PIPE_PLATFORM.get());
+                output.accept(ModItems.PIPE_PLAYER_PLATFORM.get());
+                output.accept(ModItems.PIPE_MOB_PLATFORM.get());
+                output.accept(ModItems.PIPE_MINECART_STATION.get());
+                output.accept(ModItems.PIPE_BOAT_DOCK.get());
+                output.accept(ModItems.PIPE_ITEM_RECEIVER.get());
                 output.accept(ModItems.PIPE_CURVE_ANCHOR.get());
             }).build());
 }

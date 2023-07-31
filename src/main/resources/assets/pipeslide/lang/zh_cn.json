@@ -1,8 +1,15 @@
 {
-  "item.pipeslide.pipe_node_connector": "管道节点链接器",
-  "block.pipeslide.pipe_platform": "管道站台",
+  "item.pipeslide.pipe_node_connector": "管道链接器",
   "block.pipeslide.pipe_node": "管道节点",
-  "block.pipeslide.pipe_curve_anchor": "管道曲线锚点",
+  "block.pipeslide.pipe_player_platform": "管道玩家登陆平台",
+  "block.pipeslide.pipe_mob_platform": "管道生物登陆平台",
+  "block.pipeslide.pipe_minecart_station": "管道车站",
+  "block.pipeslide.pipe_boat_dock": "管道港口",
+  "block.pipeslide.pipe_item_receiver": "管道物品接收端",
+  "block.pipeslide.pipe_curve_anchor": "曲线管道锚点",
+
+  "creativeModeTab.pipeslide.general": "管道速滑",
+
   "pipeslide.pipe.start_connect": "已选择一个节点",
   "pipeslide.pipe.selection_cleared": "已清除所选节点",
   "pipeslide.pipe.anchor_chose": "已选择曲线锚点",

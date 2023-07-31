@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes.specific.base.doubleconnect;
+package plus.dragons.pipeslide.content.pipes.base.doubleconnect;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -6,6 +6,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,12 +19,14 @@ import plus.dragons.pipeslide.foundation.utility.Couple;
 
 public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEntity> extends Block implements ProperWaterloggedBlock, IPipeConnectableBlock<T> {
     public PipeDoubleConnectBlock() {
-        super(Properties.of().mapColor(MapColor.NONE).noCollission().noOcclusion().strength(128.0f).isSuffocating(($1, $2, $3)->false).isViewBlocking(($1, $2, $3)->false));
+        this(Properties.of().mapColor(MapColor.NONE).noCollission().noOcclusion().strength(128.0f).isSuffocating(($1, $2, $3)->false).isViewBlocking(($1, $2, $3)->false));
     }
 
     public PipeDoubleConnectBlock(Properties pProperties) {
         super(pProperties);
+        registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED,false));
     }
+
 
     @Override
     public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pIsMoving) {
@@ -82,7 +85,17 @@ public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEnt
     }
 
     @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(WATERLOGGED);
+    }
+
+    @Override
     public float getShadeBrightness(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
         return 1.0F;
+    }
+
+    @Override
+    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return false;
     }
 }

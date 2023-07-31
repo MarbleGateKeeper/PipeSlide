@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes.specific.base.doubleconnect;
+package plus.dragons.pipeslide.content.pipes.base.doubleconnect;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -80,8 +80,6 @@ public abstract class PipeDoubleConnectBlockEntity extends NavigatingBE implemen
                 carrier.setPos(nextVec3);
                 var nextNextNode = nextNavigator.getNextNode(getBlockPos());
                 carrier.setPos(nextVec3);
-
-
                 if (nextNextNode == null) {
                     // No next node
                     return new Result(null, null, speed, 1);

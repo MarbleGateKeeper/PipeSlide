@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes.specific.base.doubleconnect;
+package plus.dragons.pipeslide.content.pipes.base.doubleconnect;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import plus.dragons.pipeslide.content.pipes.PipeConnectionProviderRenderer;
-import plus.dragons.pipeslide.content.pipes.specific.node.PipeNodeBlockEntity;
 
 public class PipeDoubleConnectRenderer<T extends PipeDoubleConnectBlockEntity> extends PipeConnectionProviderRenderer<T> {
 
