@@ -6,15 +6,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.ModList;
+import plus.dragons.pipeslide.compat.shimmer.ShimmerCompat;
 import plus.dragons.pipeslide.foundation.client.renderer.SafeBERenderer;
+
+import java.util.function.Supplier;
 
 public abstract class PipeConnectionProviderRenderer<T extends BlockEntity & IPipeConnectionProviderBE> extends SafeBERenderer<T> {
 
+    private static Supplier<AlternativeRendering> alternativeRendering = null;
+
+    static{
+        if (ModList.get().isLoaded("shimmer")){
+            alternativeRendering = ()->ShimmerCompat::renderConnection;
+        }
+    }
     public static void renderConnection(Level level, BlockPos startFromPos, PipeConnection connection, PoseStack poseStack, VertexConsumer vb, int light,
                                         int overlay) {
         if (!connection.primaryForRender)
             return;
-
+        if (alternativeRendering!=null){
+            alternativeRendering.get().renderConnection(level,startFromPos,connection,poseStack,vb,light,overlay);
+            return;
+        }
         poseStack.pushPose();
         poseStack.translate(0.5, 0.5, 0.5);
         if (connection.curveConnection == null) {
@@ -32,5 +46,10 @@ public abstract class PipeConnectionProviderRenderer<T extends BlockEntity & IPi
             }
         }
         poseStack.popPose();
+    }
+
+    interface AlternativeRendering{
+        void renderConnection(Level level, BlockPos startFromPos, PipeConnection connection, PoseStack poseStack, VertexConsumer vb, int light,
+                                   int overlay);
     }
 }

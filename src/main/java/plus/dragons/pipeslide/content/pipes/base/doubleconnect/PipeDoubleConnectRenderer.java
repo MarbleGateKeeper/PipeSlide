@@ -21,7 +21,7 @@ public class PipeDoubleConnectRenderer<T extends PipeDoubleConnectBlockEntity> e
         poseStack.pushPose();
         poseStack.translate((te.getBlockPos().getX() % 100) * 0.0001, (te.getBlockPos().getY() % 100) * 0.0001, (te.getBlockPos().getZ() % 100) * 0.0001);
         te.getConnection().forEach(bc -> {
-            poseStack.translate(0.001, 0.001, 0.001);
+            poseStack.translate(0.01, 0.01, 0.01);
             renderConnection(level, te.getBlockPos(), bc, poseStack, vb, light, overlay);
         });
         poseStack.popPose();
