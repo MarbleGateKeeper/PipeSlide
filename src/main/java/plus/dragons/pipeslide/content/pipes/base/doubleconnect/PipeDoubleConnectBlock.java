@@ -22,12 +22,12 @@ import plus.dragons.pipeslide.foundation.utility.Couple;
 
 public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEntity> extends Block implements ProperWaterloggedBlock, IPipeConnectableBlock<T> {
     public PipeDoubleConnectBlock() {
-        this(Properties.of().mapColor(MapColor.NONE).noCollission().noOcclusion().strength(128.0f).isSuffocating(($1, $2, $3)->false).isViewBlocking(($1, $2, $3)->false));
+        this(Properties.of().mapColor(MapColor.NONE).noCollission().noOcclusion().strength(128.0f).isSuffocating(($1, $2, $3) -> false).isViewBlocking(($1, $2, $3) -> false));
     }
 
     public PipeDoubleConnectBlock(Properties pProperties) {
         super(pProperties);
-        registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED,false));
+        registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
     @Override

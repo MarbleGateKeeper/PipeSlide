@@ -12,6 +12,7 @@ import plus.dragons.pipeslide.content.pipes.PipeConnectionProviderRenderer;
 public class PipeDoubleConnectRenderer<T extends PipeDoubleConnectBlockEntity> extends PipeConnectionProviderRenderer<T> {
 
     protected final BlockEntityRendererProvider.Context context;
+
     public PipeDoubleConnectRenderer(BlockEntityRendererProvider.Context context) {
         this.context = context;
     }

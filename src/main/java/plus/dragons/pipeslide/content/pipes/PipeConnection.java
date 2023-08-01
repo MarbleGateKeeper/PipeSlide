@@ -5,8 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import plus.dragons.pipeslide.content.pipes.style.IPipeStyle;
 import plus.dragons.pipeslide.content.pipes.style.BasicStyle;
+import plus.dragons.pipeslide.content.pipes.style.IPipeStyle;
 import plus.dragons.pipeslide.content.pipes.style.PipeStyleType;
 
 public class PipeConnection {

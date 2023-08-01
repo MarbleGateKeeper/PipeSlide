@@ -20,11 +20,12 @@ public class PipePlatformWithIndicatorRenderer<T extends PipePlatformBlockEntity
 
     private static Supplier<AlternativeRendering> alternativeRendering = null;
 
-    static{
-        if (ModList.get().isLoaded("shimmer")){
-            alternativeRendering = ()-> ShimmerCompat::renderPlatformIndicator;
+    static {
+        if (ModList.get().isLoaded("shimmer")) {
+            alternativeRendering = () -> ShimmerCompat::renderPlatformIndicator;
         }
     }
+
     private final Supplier<ItemStack> itemStackSupplier;
     private final ItemRenderer itemRenderer;
     private final BlockEntityRenderDispatcher dispatcher;
@@ -43,8 +44,8 @@ public class PipePlatformWithIndicatorRenderer<T extends PipePlatformBlockEntity
         poseStack.translate(0.5f, 1.5f, 0.5f);
         poseStack.scale(0.7f, 0.7f, 0.7f);
         poseStack.mulPose(this.dispatcher.camera.rotation());
-        if (alternativeRendering!=null){
-            alternativeRendering.get().render(itemRenderer,itemStackSupplier,partialTicks,poseStack,buffer,light,OverlayTexture.NO_OVERLAY);
+        if (alternativeRendering != null) {
+            alternativeRendering.get().render(itemRenderer, itemStackSupplier, partialTicks, poseStack, buffer, light, OverlayTexture.NO_OVERLAY);
             poseStack.popPose();
             return;
         }
@@ -52,7 +53,7 @@ public class PipePlatformWithIndicatorRenderer<T extends PipePlatformBlockEntity
         poseStack.popPose();
     }
 
-    interface AlternativeRendering{
+    interface AlternativeRendering {
         void render(ItemRenderer itemRenderer, Supplier<ItemStack> itemStackSupplier, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay);
     }
 }

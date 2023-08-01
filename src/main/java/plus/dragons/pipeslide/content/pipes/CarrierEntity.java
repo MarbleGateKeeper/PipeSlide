@@ -53,8 +53,8 @@ public class CarrierEntity extends Entity {
     }
 
 
-    private static float getInitialSpeed(){
-        return 0.15F ;
+    private static float getInitialSpeed() {
+        return 0.15F;
     }
 
     public float getStandardSpeed() {
@@ -74,15 +74,15 @@ public class CarrierEntity extends Entity {
     public void tick() {
         if (this.level().isClientSide()) {
             if (this.lSteps > 0) {
-                double d0 = this.getX() + (this.lx - this.getX()) / (double)this.lSteps;
-                double d1 = this.getY() + (this.ly - this.getY()) / (double)this.lSteps;
-                double d2 = this.getZ() + (this.lz - this.getZ()) / (double)this.lSteps;
+                double d0 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
+                double d1 = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
+                double d2 = this.getZ() + (this.lz - this.getZ()) / (double) this.lSteps;
                 --this.lSteps;
                 this.setPos(d0, d1, d2);
             }
             reapplyPosition();
             adjustRotation();
-            if(getFirstPassenger()!=null){
+            if (getFirstPassenger() != null) {
                 positionRider(getFirstPassenger());
                 adjustPassengerRotation();
             }
@@ -94,10 +94,9 @@ public class CarrierEntity extends Entity {
             if (this.navigator != null) {
                 moveAlongPipe();
                 markHurt();
-            }
-            else if (readyToEject){
-                if(beforeEjectTick > 0){
-                    move(MoverType.SELF,getDeltaMovement());
+            } else if (readyToEject) {
+                if (beforeEjectTick > 0) {
+                    move(MoverType.SELF, getDeltaMovement());
                     beforeEjectTick--;
                 } else {
                     ejectPassengers();
@@ -109,13 +108,13 @@ public class CarrierEntity extends Entity {
 
     private void moveAlongPipe() {
         var result = navigator.navigate(this, nextNode, currentSpeed, currentT);
-        if(result.speed()!=getSyncCurrentSpeed()){
-            getEntityData().set(CURRENT_SPEED,result.speed());
+        if (result.speed() != getSyncCurrentSpeed()) {
+            getEntityData().set(CURRENT_SPEED, result.speed());
         }
         navigator = result.navigatorNext();
-        if(navigator==null){
+        if (navigator == null) {
             readyToEject = true;
-            if(getFirstPassenger() instanceof Player)
+            if (getFirstPassenger() instanceof Player)
                 beforeEjectTick = 10;
             return;
         }
@@ -124,21 +123,20 @@ public class CarrierEntity extends Entity {
         currentSpeed = result.speed();
     }
 
-    private void adjustRotation(){
+    private void adjustRotation() {
         double d1 = this.xo - this.getX();
         double d3 = this.zo - this.getZ();
-        this.setYRot((float)(Mth.atan2(d3, d1) * 180.0D / Math.PI));
+        this.setYRot((float) (Mth.atan2(d3, d1) * 180.0D / Math.PI));
         double d4 = Mth.wrapDegrees(this.getYRot() - this.yRotO);
         if (d4 < -170.0D || d4 >= 170.0D) {
             this.setYRot(this.getYRot() + 180.0F);
         }
     }
 
-    private void adjustPassengerRotation(){
-        if(getFirstPassenger() instanceof AbstractMinecart){
+    private void adjustPassengerRotation() {
+        if (getFirstPassenger() instanceof AbstractMinecart) {
             getFirstPassenger().setYRot(getYRot());
-        }
-        else if(getFirstPassenger() instanceof Boat){
+        } else if (getFirstPassenger() instanceof Boat) {
             getFirstPassenger().setYRot(getYRot() + 90F);
         }
     }
@@ -149,9 +147,9 @@ public class CarrierEntity extends Entity {
         if (passenger != null) {
             passenger.stopRiding();
             var movement = getDeltaMovement();
-            if(passenger instanceof Player || passenger.getPassengers().stream().anyMatch(entity -> entity instanceof Player)){
+            if (passenger instanceof Player || passenger.getPassengers().stream().anyMatch(entity -> entity instanceof Player)) {
                 movement.scale(2 + passenger.getBbWidth());
-                passenger.setDeltaMovement(movement.x,movement.y,movement.z);
+                passenger.setDeltaMovement(movement.x, movement.y, movement.z);
             } else passenger.setDeltaMovement(getDeltaMovement().scale(1.5));
         }
     }
@@ -165,14 +163,14 @@ public class CarrierEntity extends Entity {
     protected void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
         currentT = pCompound.getFloat("CurrentT");
         currentSpeed = pCompound.getFloat("CurrentSpeed");
-        if(pCompound.contains("NavigatorPos")){
+        if (pCompound.contains("NavigatorPos")) {
             nextNode = NbtUtils.readBlockPos(pCompound.getCompound("NextNode"));
             var be = level().getBlockEntity(NbtUtils.readBlockPos(pCompound.getCompound("NavigatorPos")));
-            if(be instanceof INavigationPipeBE navigationPipeBE){
+            if (be instanceof INavigationPipeBE navigationPipeBE) {
                 navigator = navigationPipeBE;
             }
         }
-        if(pCompound.contains("BeforeEjectTick")){
+        if (pCompound.contains("BeforeEjectTick")) {
             readyToEject = true;
             beforeEjectTick = pCompound.getInt("BeforeEjectTick");
         }
@@ -180,14 +178,14 @@ public class CarrierEntity extends Entity {
 
     @Override
     protected void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
-        pCompound.putFloat("CurrentT",currentT);
-        pCompound.putFloat("CurrentSpeed",currentSpeed);
-        if(navigator!=null){
-            pCompound.put("NavigatorPos",NbtUtils.writeBlockPos(((BlockEntity) navigator).getBlockPos()));
-            pCompound.put("NextNode",NbtUtils.writeBlockPos(nextNode));
+        pCompound.putFloat("CurrentT", currentT);
+        pCompound.putFloat("CurrentSpeed", currentSpeed);
+        if (navigator != null) {
+            pCompound.put("NavigatorPos", NbtUtils.writeBlockPos(((BlockEntity) navigator).getBlockPos()));
+            pCompound.put("NextNode", NbtUtils.writeBlockPos(nextNode));
         }
-        if(readyToEject){
-            pCompound.putInt("BeforeEjectTick",beforeEjectTick);
+        if (readyToEject) {
+            pCompound.putInt("BeforeEjectTick", beforeEjectTick);
         }
     }
 
@@ -207,10 +205,10 @@ public class CarrierEntity extends Entity {
         this.lSteps = pPosRotationIncrements + 2;
     }
 
-    public static void modifyFOV(ComputeFovModifierEvent event){
-        if(event.getPlayer().getVehicle() instanceof CarrierEntity carrier){
+    public static void modifyFOV(ComputeFovModifierEvent event) {
+        if (event.getPlayer().getVehicle() instanceof CarrierEntity carrier) {
             float mul = ((carrier.getSyncCurrentSpeed() - getInitialSpeed()) / (carrier.getStandardSpeed() - getInitialSpeed())) * 1.5f + 1;
-            event.setNewFovModifier(event.getNewFovModifier()*mul);
+            event.setNewFovModifier(event.getNewFovModifier() * mul);
         }
     }
 }

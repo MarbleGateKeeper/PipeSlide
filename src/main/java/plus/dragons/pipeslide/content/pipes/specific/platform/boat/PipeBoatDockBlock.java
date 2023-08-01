@@ -41,11 +41,11 @@ public class PipeBoatDockBlock extends PipeDoubleConnectBlock<PipeBoatDockBlockE
     @Override
     @NotNull
     public InteractionResult use(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
-        if(pHit.getDirection()== Direction.UP && pPlayer.getItemInHand(pHand).getItem() instanceof BoatItem boatItem){
-            if(!pLevel.isClientSide()) {
+        if (pHit.getDirection() == Direction.UP && pPlayer.getItemInHand(pHand).getItem() instanceof BoatItem boatItem) {
+            if (!pLevel.isClientSide()) {
                 var boatItemStack = pPlayer.getItemInHand(pHand);
-                Boat boat = ((BoatItemAccessor)boatItem).invokeGetBoat(pLevel, pHit);
-                boat.setVariant(((BoatItemAccessor)boatItem).getType());
+                Boat boat = ((BoatItemAccessor) boatItem).invokeGetBoat(pLevel, pHit);
+                boat.setVariant(((BoatItemAccessor) boatItem).getType());
                 pLevel.addFreshEntity(boat);
                 pLevel.gameEvent(pPlayer, GameEvent.ENTITY_PLACE, pHit.getLocation());
                 if (!pPlayer.getAbilities().instabuild) {

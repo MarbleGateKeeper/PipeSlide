@@ -16,17 +16,18 @@ public abstract class PipeConnectionProviderRenderer<T extends BlockEntity & IPi
 
     private static Supplier<AlternativeRendering> alternativeRendering = null;
 
-    static{
-        if (ModList.get().isLoaded("shimmer")){
-            alternativeRendering = ()->ShimmerCompat::renderConnection;
+    static {
+        if (ModList.get().isLoaded("shimmer")) {
+            alternativeRendering = () -> ShimmerCompat::renderConnection;
         }
     }
+
     public static void renderConnection(Level level, BlockPos startFromPos, PipeConnection connection, PoseStack poseStack, VertexConsumer vb, int light,
                                         int overlay) {
         if (!connection.primaryForRender)
             return;
-        if (alternativeRendering!=null){
-            alternativeRendering.get().render(level,startFromPos,connection,poseStack,vb,light,overlay);
+        if (alternativeRendering != null) {
+            alternativeRendering.get().render(level, startFromPos, connection, poseStack, vb, light, overlay);
             return;
         }
         poseStack.pushPose();
@@ -48,8 +49,8 @@ public abstract class PipeConnectionProviderRenderer<T extends BlockEntity & IPi
         poseStack.popPose();
     }
 
-    interface AlternativeRendering{
+    interface AlternativeRendering {
         void render(Level level, BlockPos startFromPos, PipeConnection connection, PoseStack poseStack, VertexConsumer vb, int light,
-                                   int overlay);
+                    int overlay);
     }
 }

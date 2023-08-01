@@ -11,6 +11,7 @@ public class PipeNodeBlock extends PipeDoubleConnectBlock<PipeNodeBlockEntity> {
     public PipeNodeBlock() {
         super();
     }
+
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         return 10;

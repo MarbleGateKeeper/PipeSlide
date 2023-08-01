@@ -2,10 +2,10 @@ package plus.dragons.pipeslide.content.pipes.style;
 
 //import com.lowdragmc.shimmer.client.postprocessing.PostProcessing;
 //import com.lowdragmc.shimmer.client.shader.RenderUtils;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
@@ -18,7 +18,8 @@ import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 public class BasicStyle implements IPipeStyle {
     private static final ResourceLocation WHITE_CONCRETE = new ResourceLocation("block/white_concrete");
-    public static BasicStyle createDefault(){
+
+    public static BasicStyle createDefault() {
         return new BasicStyle();
     }
 
@@ -48,7 +49,7 @@ public class BasicStyle implements IPipeStyle {
 
         Vec3 frontFaceNormal = direction.scale(-1);
         Vec3 downFaceNormal = frontFaceNormal.cross(VecHelper.axisAlingedPlaneOf(Direction.DOWN)).normalize().cross(frontFaceNormal).normalize();
-        if(downFaceNormal.length()<0.8f){
+        if (downFaceNormal.length() < 0.8f) {
             downFaceNormal = frontFaceNormal.cross(VecHelper.axisAlingedPlaneOf(Direction.WEST)).normalize().cross(frontFaceNormal).normalize();
         }
         Vec3 upFaceNormal = downFaceNormal.scale(-1).normalize();
