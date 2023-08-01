@@ -8,8 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import plus.dragons.pipeslide.entry.*;
 
-// TODO fix carrier turns back to previous location when pause
-// TODO detach shimmer as required dependency
+// TODO use shimmer as optional dependency
 // TODO add a way to indicate type of platform
 // TODO add a tool to configure texture
 // TODO add en_us.json

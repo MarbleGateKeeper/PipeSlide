@@ -18,8 +18,8 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<CarrierEntity>> CARRIER = register("carrier", CarrierEntity::new);
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String id, EntityType.EntityFactory<T> factory) {
-        return ENTITY_TYPES.register(id, () -> EntityType.Builder.of(factory, MobCategory.MISC)
-                .sized(0.1F, 0.1F).clientTrackingRange(8).build(id));
+        return ENTITY_TYPES.register(id, () -> EntityType.Builder.of(factory, MobCategory.MISC)//.setShouldReceiveVelocityUpdates(true)
+                .sized(0.1F, 0.1F).clientTrackingRange(10).build(id));
     }
 
     @SubscribeEvent

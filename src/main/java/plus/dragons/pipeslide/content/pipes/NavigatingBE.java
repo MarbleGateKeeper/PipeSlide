@@ -26,8 +26,6 @@ public abstract class NavigatingBE extends CachedRenderBoundingBoxBE implements 
     protected int lazyTickCounter;
     private boolean chunkUnloaded;
 
-    // Used for simulating this TE in a client-only setting
-    private boolean virtualMode;
 
     public NavigatingBE(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -122,14 +120,6 @@ public abstract class NavigatingBE extends CachedRenderBoundingBoxBE implements 
     public void setLazyTickRate(int slowTickRate) {
         this.lazyTickRate = slowTickRate;
         this.lazyTickCounter = slowTickRate;
-    }
-
-    public void markVirtual() {
-        virtualMode = true;
-    }
-
-    public boolean isVirtual() {
-        return virtualMode;
     }
 
     public boolean isChunkUnloaded() {

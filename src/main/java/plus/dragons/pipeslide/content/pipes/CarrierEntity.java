@@ -32,9 +32,6 @@ public class CarrierEntity extends Entity {
     private double lx;
     private double ly;
     private double lz;
-    private double lxd;
-    private double lyd;
-    private double lzd;
     private int beforeEjectTick = 5;
     private boolean readyToEject = false;
 
@@ -54,6 +51,7 @@ public class CarrierEntity extends Entity {
     protected void defineSynchedData() {
         this.getEntityData().define(CURRENT_SPEED, getInitialSpeed());
     }
+
 
     private static float getInitialSpeed(){
         return 0.15F ;
@@ -94,6 +92,7 @@ public class CarrierEntity extends Entity {
             }
             if (this.navigator != null) {
                 moveAlongPipe();
+                markHurt();
             }
             else if (readyToEject){
                 if(beforeEjectTick > 0){
@@ -109,7 +108,6 @@ public class CarrierEntity extends Entity {
 
     private void moveAlongPipe() {
         var result = navigator.navigate(this, nextNode, currentSpeed, currentT);
-        markHurt();
         if(result.speed()!=getSyncCurrentSpeed()){
             getEntityData().set(CURRENT_SPEED,result.speed());
         }
@@ -164,19 +162,6 @@ public class CarrierEntity extends Entity {
 
     @Override
     protected void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
-        pCompound.putFloat("CurrentT",currentT);
-        pCompound.putFloat("CurrentSpeed",currentSpeed);
-        if(navigator!=null){
-            pCompound.put("NavigatorPos",NbtUtils.writeBlockPos(((BlockEntity) navigator).getBlockPos()));
-            pCompound.put("NextNode",NbtUtils.writeBlockPos(nextNode));
-        }
-        if(readyToEject){
-            pCompound.putInt("BeforeEjectTick",beforeEjectTick);
-        }
-    }
-
-    @Override
-    protected void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
         currentT = pCompound.getFloat("CurrentT");
         currentSpeed = pCompound.getFloat("CurrentSpeed");
         if(pCompound.contains("NavigatorPos")){
@@ -189,6 +174,19 @@ public class CarrierEntity extends Entity {
         if(pCompound.contains("BeforeEjectTick")){
             readyToEject = true;
             beforeEjectTick = pCompound.getInt("BeforeEjectTick");
+        }
+    }
+
+    @Override
+    protected void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
+        pCompound.putFloat("CurrentT",currentT);
+        pCompound.putFloat("CurrentSpeed",currentSpeed);
+        if(navigator!=null){
+            pCompound.put("NavigatorPos",NbtUtils.writeBlockPos(((BlockEntity) navigator).getBlockPos()));
+            pCompound.put("NextNode",NbtUtils.writeBlockPos(nextNode));
+        }
+        if(readyToEject){
+            pCompound.putInt("BeforeEjectTick",beforeEjectTick);
         }
     }
 
@@ -206,18 +204,6 @@ public class CarrierEntity extends Entity {
         this.ly = pY;
         this.lz = pZ;
         this.lSteps = pPosRotationIncrements + 2;
-        this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
-    }
-
-    /**
-     * Updates the entity motion clientside, called by packets from the server
-     */
-    @Override
-    public void lerpMotion(double pX, double pY, double pZ) {
-        this.lxd = pX;
-        this.lyd = pY;
-        this.lzd = pZ;
-        this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
     }
 
     public static void modifyFOV(ComputeFovModifierEvent event){

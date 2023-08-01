@@ -49,19 +49,21 @@ public abstract class SyncedBE extends BlockEntity {
         super(type, pos, state);
     }
 
+    // Synchronizing on LevelChunk Load
     @Override
     public CompoundTag getUpdateTag() {
         return writeClient(new CompoundTag());
     }
 
     @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
     public void handleUpdateTag(CompoundTag tag) {
         readClient(tag);
+    }
+
+    // Synchronizing on Block Update
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this); // Call getUpdateTag()
     }
 
     @Override
