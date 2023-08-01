@@ -20,9 +20,3 @@ description='''
     versionRange="[1.20.1,1.20.2)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.pipeslide]]
-    modId="shimmer"
-    mandatory=true
-    versionRange="[0.1.15,)"
-    ordering="NONE"
-    side="CLIENT"

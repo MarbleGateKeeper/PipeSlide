@@ -2,11 +2,14 @@ package plus.dragons.pipeslide.content.pipes.base.doubleconnect;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +29,6 @@ public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEnt
         super(pProperties);
         registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED,false));
     }
-
 
     @Override
     public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pIsMoving) {
@@ -87,6 +89,23 @@ public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEnt
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(WATERLOGGED);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(@NotNull BlockPlaceContext pContext) {
+        return withWater(super.getStateForPlacement(pContext), pContext);
+    }
+
+    @Override
+    public @NotNull BlockState updateShape(@NotNull BlockState pState, @NotNull Direction pDirection, @NotNull BlockState pNeighborState,
+                                           @NotNull LevelAccessor pLevel, @NotNull BlockPos pCurrentPos, @NotNull BlockPos pNeighborPos) {
+        updateWater(pLevel, pState, pCurrentPos);
+        return pState;
+    }
+
+    @Override
+    public @NotNull FluidState getFluidState(@NotNull BlockState pState) {
+        return fluidState(pState);
     }
 
     @Override
