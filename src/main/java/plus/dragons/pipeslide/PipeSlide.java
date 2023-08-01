@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import plus.dragons.pipeslide.entry.*;
 
+// TODO fix still some Y-fighting on pipe rendering
 // TODO use shimmer as optional dependency
 // TODO add a way to indicate type of platform
 // TODO add a tool to configure texture

@@ -83,6 +83,7 @@ public class CarrierEntity extends Entity {
             reapplyPosition();
             adjustRotation();
             if(getFirstPassenger()!=null){
+                positionRider(getFirstPassenger());
                 adjustPassengerRotation();
             }
         } else {
