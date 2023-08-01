@@ -26,7 +26,7 @@ public abstract class PipeConnectionProviderRenderer<T extends BlockEntity & IPi
         if (!connection.primaryForRender)
             return;
         if (alternativeRendering!=null){
-            alternativeRendering.get().renderConnection(level,startFromPos,connection,poseStack,vb,light,overlay);
+            alternativeRendering.get().render(level,startFromPos,connection,poseStack,vb,light,overlay);
             return;
         }
         poseStack.pushPose();
@@ -49,7 +49,7 @@ public abstract class PipeConnectionProviderRenderer<T extends BlockEntity & IPi
     }
 
     interface AlternativeRendering{
-        void renderConnection(Level level, BlockPos startFromPos, PipeConnection connection, PoseStack poseStack, VertexConsumer vb, int light,
+        void render(Level level, BlockPos startFromPos, PipeConnection connection, PoseStack poseStack, VertexConsumer vb, int light,
                                    int overlay);
     }
 }

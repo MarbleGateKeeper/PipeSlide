@@ -11,7 +11,10 @@ import plus.dragons.pipeslide.content.pipes.PipeConnectionProviderRenderer;
 
 public class PipeDoubleConnectRenderer<T extends PipeDoubleConnectBlockEntity> extends PipeConnectionProviderRenderer<T> {
 
-    public PipeDoubleConnectRenderer(BlockEntityRendererProvider.Context context) {}
+    protected final BlockEntityRendererProvider.Context context;
+    public PipeDoubleConnectRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
+    }
 
     @Override
     protected void renderSafe(T te, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light,
