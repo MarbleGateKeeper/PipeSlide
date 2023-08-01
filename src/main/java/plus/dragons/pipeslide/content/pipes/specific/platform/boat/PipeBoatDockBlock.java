@@ -7,7 +7,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BoatItem;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,11 +30,6 @@ public class PipeBoatDockBlock extends PipeDoubleConnectBlock<PipeBoatDockBlockE
     @Override
     public BlockEntityType<PipeBoatDockBlockEntity> getTileEntityType() {
         return ModBlockEntities.PIPE_BOAT_DOCK.get();
-    }
-
-    @Override
-    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return 10;
     }
 
     @Override

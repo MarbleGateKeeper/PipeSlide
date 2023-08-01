@@ -21,8 +21,8 @@ public class ShimmerCompat {
     public static void renderConnection(Level level, BlockPos startFromPos, PipeConnection connection, PoseStack poseStack, VertexConsumer vb, int light,
                                         int overlay) {
         PoseStack finalStack = RenderUtils.copyPoseStack(poseStack); // we provide a way to copy the poststack
-        PostProcessing.BLOOM_UNREAL.postEntityForce(bufferSource -> {  //must use the bufferSource provided by us
-            VertexConsumer consumer = bufferSource.getBuffer(RenderType.cutout()); //must use the bufferSource provided by us
+        PostProcessing.BLOOM_UNITY.postEntityForce(bufferSource -> {  //must use the bufferSource provided by us
+            VertexConsumer consumer = bufferSource.getBuffer(RenderType.cutoutMipped()); //must use the bufferSource provided by us
             finalStack.pushPose();
             finalStack.translate(0.5, 0.5, 0.5);
             if (connection.curveConnection == null) {
@@ -45,7 +45,7 @@ public class ShimmerCompat {
 
     public static void renderPlatformIndicator(ItemRenderer itemRenderer, Supplier<ItemStack> itemStackSupplier, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
         PoseStack finalStack = RenderUtils.copyPoseStack(poseStack); // we provide a way to copy the poststack
-        PostProcessing.BLOOM_UNREAL.postEntityForce(bufferSource -> {  //must use the bufferSource provided by us
+        PostProcessing.BLOOM_UNITY.postEntityForce(bufferSource -> {  //must use the bufferSource provided by us
             itemRenderer.renderStatic(itemStackSupplier.get(), ItemDisplayContext.FIXED, light, overlay, finalStack, bufferSource, Minecraft.getInstance().level, 0);
         });
     }
