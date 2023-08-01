@@ -11,7 +11,6 @@ import plus.dragons.pipeslide.entry.*;
 // TODO use shimmer as optional dependency
 // TODO add a way to indicate type of platform
 // TODO add a tool to configure texture
-// TODO add en_us.json
 // TODO add crafting recipes
 @Mod(PipeSlide.MOD_ID)
 public class PipeSlide {

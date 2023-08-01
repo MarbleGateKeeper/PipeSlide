@@ -1,0 +1,24 @@
+{
+  "item.pipeslide.pipe_node_connector": "Pipe Connector",
+  "block.pipeslide.pipe_node": "Pipe Node",
+  "block.pipeslide.pipe_player_platform": "Pipe Player Platform",
+  "block.pipeslide.pipe_mob_platform": "Pipe Mob Platform",
+  "block.pipeslide.pipe_minecart_station": "Pipe Minecart Station",
+  "block.pipeslide.pipe_boat_dock": "Pipe Boat Dock",
+  "block.pipeslide.pipe_item_receiver": "Pipe Item Receiver",
+  "block.pipeslide.pipe_curve_anchor": "Curve Anchor for Pipe",
+
+  "creativeModeTab.pipeslide.general": "PipeSlide",
+
+  "pipeslide.pipe.start_connect": "Node chose",
+  "pipeslide.pipe.selection_cleared": "clear all chosen node",
+  "pipeslide.pipe.anchor_chose": "Curve anchor chose",
+  "pipeslide.pipe.anchor_chose_again": "Curve anchor chose",
+  "pipeslide.pipe.start_node_not_available": "Previously chosen node is invalid",
+  "pipeslide.pipe.already_connected": "A node reaches maximal connection",
+  "pipeslide.pipe.anchor_not_available": "Previously chosen curve anchor is invalid",
+  "pipeslide.pipe.pipe_too_long": "Pipe length exceeds limit",
+  "pipeslide.pipe.successfully_connect": "Pipe connected",
+  "pipeslide.pipe.not_connectable": "Not a valid connectable node",
+  "pipeslide.pipe.not_pipe_node": "Not a pipe node"
+}
