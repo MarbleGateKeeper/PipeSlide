@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -67,16 +68,25 @@ public class CarrierEntity extends Entity {
     }
 
     @Override
+    public boolean isPassenger() {
+        return false;
+    }
+
+    @Override
     public void tick() {
         if (this.level().isClientSide()) {
             if (this.lSteps > 0) {
-                double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
-                double d6 = this.getY() + (this.ly - this.getY()) / (double) this.lSteps;
-                double d7 = this.getZ() + (this.lz - this.getZ()) / (double) this.lSteps;
+                double d0 = this.getX() + (this.lx - this.getX()) / (double)this.lSteps;
+                double d1 = this.getY() + (this.ly - this.getY()) / (double)this.lSteps;
+                double d2 = this.getZ() + (this.lz - this.getZ()) / (double)this.lSteps;
                 --this.lSteps;
-                this.setPos(d5, d6, d7);
+                this.setPos(d0, d1, d2);
             }
             reapplyPosition();
+            adjustRotation();
+            if(getFirstPassenger()!=null){
+                adjustPassengerRotation();
+            }
         } else {
             if (getFirstPassenger() == null) {
                 this.remove(RemovalReason.DISCARDED);
@@ -84,10 +94,6 @@ public class CarrierEntity extends Entity {
             }
             if (this.navigator != null) {
                 moveAlongPipe();
-                if(getFirstPassenger() instanceof Boat || getFirstPassenger() instanceof AbstractMinecart){
-                    onPassengerTurned(getFirstPassenger());
-                    getFirstPassenger().hurtMarked = true;
-                }
             }
             else if (readyToEject){
                 if(beforeEjectTick > 0){
@@ -101,8 +107,9 @@ public class CarrierEntity extends Entity {
         }
     }
 
-    public void moveAlongPipe() {
+    private void moveAlongPipe() {
         var result = navigator.navigate(this, nextNode, currentSpeed, currentT);
+        markHurt();
         if(result.speed()!=getSyncCurrentSpeed()){
             getEntityData().set(CURRENT_SPEED,result.speed());
         }
@@ -118,15 +125,34 @@ public class CarrierEntity extends Entity {
         currentSpeed = result.speed();
     }
 
+    private void adjustRotation(){
+        double d1 = this.xo - this.getX();
+        double d3 = this.zo - this.getZ();
+        this.setYRot((float)(Mth.atan2(d3, d1) * 180.0D / Math.PI));
+        double d4 = Mth.wrapDegrees(this.getYRot() - this.yRotO);
+        if (d4 < -170.0D || d4 >= 170.0D) {
+            this.setYRot(this.getYRot() + 180.0F);
+        }
+    }
+
+    private void adjustPassengerRotation(){
+        if(getFirstPassenger() instanceof AbstractMinecart){
+            getFirstPassenger().setYRot(getYRot());
+        }
+        else if(getFirstPassenger() instanceof Boat){
+            getFirstPassenger().setYRot(getYRot() + 90F);
+        }
+    }
+
     @Override
     public void ejectPassengers() {
         var passenger = getFirstPassenger();
         if (passenger != null) {
             passenger.stopRiding();
             var movement = getDeltaMovement();
-            if(passenger instanceof Player player){
-                movement.scale(1.5);
-                player.push(movement.x,movement.y,movement.z);
+            if(passenger instanceof Player || passenger.getPassengers().stream().anyMatch(entity -> entity instanceof Player)){
+                movement.scale(2 + passenger.getBbWidth());
+                passenger.setDeltaMovement(movement.x,movement.y,movement.z);
             } else passenger.setDeltaMovement(getDeltaMovement().scale(1.5));
         }
     }
@@ -200,6 +226,4 @@ public class CarrierEntity extends Entity {
             event.setNewFovModifier(event.getNewFovModifier()*mul);
         }
     }
-
-
 }

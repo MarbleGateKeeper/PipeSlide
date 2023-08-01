@@ -48,5 +48,6 @@ public abstract class PipePlatformBlockEntity<T extends Entity> extends PipeDoub
         carrier.setPos(VecHelper.getCenterOf(getBlockPos()));
         level.addFreshEntity(carrier);
         passenger.startRiding(carrier, true);
+        carrier.hurtMarked = true;
     }
 }
