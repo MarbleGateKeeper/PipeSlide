@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.utility;
+package plus.dragons.pipeslide.content.pipes;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

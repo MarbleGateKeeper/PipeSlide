@@ -8,7 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import plus.dragons.pipeslide.content.pipes.CarrierEntity;
+import plus.dragons.pipeslide.content.carrier.CarrierEntity;
 import plus.dragons.pipeslide.content.pipes.base.doubleconnect.PipeDoubleConnectRenderer;
 import plus.dragons.pipeslide.content.pipes.specific.platform.PipePlatformWithIndicatorRenderer;
 import plus.dragons.pipeslide.entry.ModBlockEntities;

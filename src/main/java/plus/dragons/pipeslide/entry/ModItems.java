@@ -6,7 +6,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.pipeslide.PipeSlide;
-import plus.dragons.pipeslide.content.pipes.PipeNodeConnectorItem;
+import plus.dragons.pipeslide.content.utility.PipeNodeConnectorItem;
 
 public class ModItems {
 

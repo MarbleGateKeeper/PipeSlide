@@ -9,6 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.pipeslide.content.carrier.CarrierEntity;
 import plus.dragons.pipeslide.content.pipes.*;
 import plus.dragons.pipeslide.foundation.utility.VecHelper;
 

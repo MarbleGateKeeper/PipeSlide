@@ -2,6 +2,7 @@ package plus.dragons.pipeslide.content.pipes;
 
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.Nullable;
+import plus.dragons.pipeslide.content.carrier.CarrierEntity;
 
 public interface INavigationPipeBE {
 

@@ -18,14 +18,21 @@ import plus.dragons.pipeslide.foundation.utility.VecHelper;
 
 public class BasicStyle implements IPipeStyle {
     private static final ResourceLocation WHITE_CONCRETE = new ResourceLocation("block/white_concrete");
+    private final ResourceLocation texture;
+
+    public BasicStyle(ResourceLocation texture) {
+        this.texture = texture;
+    }
 
     public static BasicStyle createDefault() {
-        return new BasicStyle();
+        return new BasicStyle(WHITE_CONCRETE);
     }
 
     @Override
     public CompoundTag write() {
-        return new CompoundTag();
+        var ret = new CompoundTag();
+        ret.putString("ConnectionTexture",texture.toString());
+        return ret;
     }
 
     @Override
@@ -38,11 +45,10 @@ public class BasicStyle implements IPipeStyle {
                                 int overlay) {
 
         var direction = start.vectorTo(end).normalize();
-        var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(WHITE_CONCRETE);
+        var atlas = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
 
         Vec3 absEnd = start.vectorTo(end);
 
-        // calculate vertex and vertex normal
         float extend = 0.2f;
         float width = 0.24f;
         float length = (float) absEnd.length();
@@ -72,22 +78,7 @@ public class BasicStyle implements IPipeStyle {
         Vec3 back3 = absEnd.add(extendBack).add(downWidth).add(leftWidth);
         Vec3 back4 = absEnd.add(extendBack).add(downWidth).add(rightWidth);
 
-        // a MultiBufferSource for entity or BlockEntityRenderer, render during this will support texture/tindex bloom setting
-        /*PoseStack finalStack = RenderUtils.copyPoseStack(poseStack);
-        var matrix = finalStack.last().pose();// we provide a way to copy the poststack
-        Vec3 finalDownFaceNormal = downFaceNormal;
-        PostProcessing.BLOOM_UNREAL.postEntityForce(bufferSource -> {  //must use the bufferSource provided by us
-            VertexConsumer consumer2 = bufferSource.getBuffer(RenderType.cutout()); //must use the bufferSource provided by us
-            fillFrontQuad(consumer2, matrix, atlas, front1, front2, front3, front4, frontFaceNormal, light);
-            fillFrontQuad(consumer2, matrix, atlas, back2, back1, back4, back3, direction, light);
-
-            fillSideQuad(consumer2, matrix, atlas, front1, back1, back2, front2, direction, upFaceNormal, width, length, light);
-            fillSideQuad(consumer2, matrix, atlas, front3, back3, back4, front4, direction, finalDownFaceNormal, width, length, light);
-            fillSideQuad(consumer2, matrix, atlas, back1, front1, front4, back4, frontFaceNormal, leftFaceNormal, width, length, light);
-            fillSideQuad(consumer2, matrix, atlas, front2, back2, back3, front3, direction, rightFaceNormal, width, length, light);
-        });*/
-
-        var matrix = poseStack.last().pose();// we provide a way to copy the poststack
+        var matrix = poseStack.last().pose();
         Vec3 finalDownFaceNormal = downFaceNormal;
         fillFrontQuad(consumer, matrix, atlas, front1, front2, front3, front4, frontFaceNormal, light);
         fillFrontQuad(consumer, matrix, atlas, back2, back1, back4, back3, direction, light);

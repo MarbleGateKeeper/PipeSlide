@@ -11,7 +11,7 @@ import plus.dragons.pipeslide.content.pipes.specific.platform.item.PipeItemRecei
 import plus.dragons.pipeslide.content.pipes.specific.platform.minecart.PipeMinecartStationBlock;
 import plus.dragons.pipeslide.content.pipes.specific.platform.mob.PipeMobPlatformBlock;
 import plus.dragons.pipeslide.content.pipes.specific.platform.player.PipePlayerPlatformBlock;
-import plus.dragons.pipeslide.content.utility.PipeCurveAnchorBlock;
+import plus.dragons.pipeslide.content.pipes.PipeCurveAnchorBlock;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PipeSlide.MOD_ID);

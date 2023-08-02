@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes;
+package plus.dragons.pipeslide.content.utility;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -16,6 +16,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import plus.dragons.pipeslide.content.pipes.BezierConnection;
+import plus.dragons.pipeslide.content.pipes.IPipeConnectableBlock;
 import plus.dragons.pipeslide.entry.ModBlocks;
 import plus.dragons.pipeslide.entry.ModItems;
 import plus.dragons.pipeslide.foundation.utility.Couple;

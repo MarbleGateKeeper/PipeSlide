@@ -1,4 +1,4 @@
-package plus.dragons.pipeslide.content.pipes;
+package plus.dragons.pipeslide.content.carrier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
+import plus.dragons.pipeslide.content.pipes.INavigationPipeBE;
 import plus.dragons.pipeslide.entry.ModEntityTypes;
 
 public class CarrierEntity extends Entity {
