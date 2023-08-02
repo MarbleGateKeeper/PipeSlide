@@ -6,12 +6,16 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.pipeslide.PipeSlide;
-import plus.dragons.pipeslide.content.utility.PipeNodeConnectorItem;
+import plus.dragons.pipeslide.content.utility.PipeAdjustorItem;
+import plus.dragons.pipeslide.content.utility.PipeConnectorItem;
+import plus.dragons.pipeslide.content.utility.PipeMaterialSelectorItem;
 
 public class ModItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, PipeSlide.MOD_ID);
-    public static final RegistryObject<Item> PIPE_NODE_CONNECTOR = ITEMS.register("pipe_node_connector", PipeNodeConnectorItem::new);
+    public static final RegistryObject<Item> PIPE_CONNECTOR = ITEMS.register("pipe_connector", PipeConnectorItem::new);
+    public static final RegistryObject<Item> PIPE_ADJUSTOR = ITEMS.register("pipe_adjustor", PipeAdjustorItem::new);
+    public static final RegistryObject<Item> PIPE_MATERIAL_SELECTOR = ITEMS.register("pipe_material_selector", PipeMaterialSelectorItem::new);
     // Pipe
     public static final RegistryObject<Item> PIPE_NODE = ITEMS.register("pipe_node", () -> new BlockItem(ModBlocks.PIPE_NODE.get(), new Item.Properties()));
     public static final RegistryObject<Item> PIPE_PLAYER_PLATFORM = ITEMS.register("pipe_player_platform", () -> new BlockItem(ModBlocks.PIPE_PLAYER_PLATFORM.get(), new Item.Properties()));

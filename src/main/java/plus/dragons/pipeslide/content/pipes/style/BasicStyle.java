@@ -31,7 +31,7 @@ public class BasicStyle implements IPipeStyle {
     @Override
     public CompoundTag write() {
         var ret = new CompoundTag();
-        ret.putString("ConnectionTexture",texture.toString());
+        ret.putString("ConnectionTexture", texture.toString());
         return ret;
     }
 

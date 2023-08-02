@@ -20,6 +20,9 @@ import plus.dragons.pipeslide.foundation.block.IEntityBlock;
 import plus.dragons.pipeslide.foundation.block.ProperWaterloggedBlock;
 import plus.dragons.pipeslide.foundation.utility.Couple;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEntity> extends Block implements ProperWaterloggedBlock, IPipeConnectableBlock<T> {
     public PipeDoubleConnectBlock() {
         this(Properties.of().mapColor(MapColor.NONE).noCollission().noOcclusion().strength(128.0f).isSuffocating(($1, $2, $3) -> false).isViewBlocking(($1, $2, $3) -> false));
@@ -79,6 +82,39 @@ public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEnt
         else if (be.connectionB != null && be.connectionB.to.equals(removeTarget))
             be.connectionB = null;
         be.notifyUpdate();
+    }
+
+    @Override
+    public void adjustPipeConnectionShape(BlockGetter world, BlockPos pos, BlockPos connectTarget, @Nullable BlockPos midPoint) {
+        var be = getTileEntity(world, pos);
+        if (be.connectionA != null && be.connectionA.to.equals(connectTarget)) {
+            var connection = new PipeConnection(connectTarget);
+            connection.primaryForRender = be.connectionA.primaryForRender;
+            if (midPoint != null) {
+                connection.curveConnection = new BezierConnection(Couple.create(pos, connectTarget), midPoint);
+            }
+            be.connectionA = connection;
+            be.notifyUpdate();
+        } else if (be.connectionB != null && be.connectionB.to.equals(connectTarget)) {
+            var connection = new PipeConnection(connectTarget);
+            connection.primaryForRender = be.connectionB.primaryForRender;
+            if (midPoint != null) {
+                connection.curveConnection = new BezierConnection(Couple.create(pos, connectTarget), midPoint);
+            }
+            be.connectionB = connection;
+            be.notifyUpdate();
+        } else {
+            throw new RuntimeException("PipeNode " + be + " at " + pos + " cannot replace connection of " + pos + " to " + connectTarget);
+        }
+    }
+
+    @Override
+    public List<PipeConnection> getConnections(BlockGetter world, BlockPos pos) {
+        var be = getTileEntity(world, pos);
+        var ret = new ArrayList<PipeConnection>();
+        if (be.connectionA != null) ret.add(be.connectionA);
+        if (be.connectionB != null) ret.add(be.connectionB);
+        return ret;
     }
 
     @Override

@@ -1,5 +1,7 @@
 {
-  "item.pipeslide.pipe_node_connector": "Pipe Connector",
+  "item.pipeslide.pipe_connector": "Pipe Connector",
+  "item.pipeslide.pipe_adjustor": "Pipe Adjustor",
+  "item.pipeslide.pipe_material_selector": "Pipe Material Selector",
   "block.pipeslide.pipe_node": "Pipe Node",
   "block.pipeslide.pipe_player_platform": "Pipe Player Platform",
   "block.pipeslide.pipe_mob_platform": "Pipe Mob Platform",
@@ -10,15 +12,31 @@
 
   "creativeModeTab.pipeslide.general": "PipeSlide",
 
-  "pipeslide.pipe.start_connect": "Node chose",
-  "pipeslide.pipe.selection_cleared": "clear all chosen node",
-  "pipeslide.pipe.anchor_chose": "Curve anchor chose",
-  "pipeslide.pipe.anchor_chose_again": "Curve anchor chose",
-  "pipeslide.pipe.start_node_not_available": "Previously chosen node is invalid",
-  "pipeslide.pipe.already_connected": "A node reaches maximal connection",
-  "pipeslide.pipe.anchor_not_available": "Previously chosen curve anchor is invalid",
-  "pipeslide.pipe.pipe_too_long": "Pipe length exceeds limit",
-  "pipeslide.pipe.successfully_connect": "Pipe connected",
-  "pipeslide.pipe.not_connectable": "Not a valid connectable node",
-  "pipeslide.pipe.not_pipe_node": "Not a pipe node"
+  "pipeslide.pipe_connector.notify.start_connect": "Node selected",
+  "pipeslide.pipe_connector.notify.selection_cleared": "All selected node cleared",
+  "pipeslide.pipe_connector.notify.anchor_selected": "Curve anchor selected",
+  "pipeslide.pipe_connector.notify.anchor_re_selected": "Curve anchor re-selected",
+  "pipeslide.pipe_connector.notify.start_node_not_available": "Previously selected node is invalid",
+  "pipeslide.pipe_connector.notify.already_connected": "A node reaches maximal connection",
+  "pipeslide.pipe_connector.notify.anchor_not_available": "Previously selected curve anchor is invalid",
+  "pipeslide.pipe_connector.notify.pipe_too_long": "Pipe length exceeds limit",
+  "pipeslide.pipe_connector.notify.successfully_connect": "Pipe connected successfully",
+  "pipeslide.pipe_connector.notify.not_connectable": "Not a valid connectable node",
+  "pipeslide.pipe_connector.notify.not_pipe_node": "Not a pipe node",
+  
+  "pipeslide.pipe_adjustor.notify.first_node_selected": "First node selected",
+  "pipeslide.pipe_adjustor.notify.selection_cleared": "All selected node cleared",
+  "pipeslide.pipe_adjustor.notify.pipe_re_selected": "Pipe selected",
+  "pipeslide.pipe_adjustor.notify.pipe_selected": "Pipe re-selected",
+  "pipeslide.pipe_adjustor.notify.no_valid_pipe_between_these_nodes": "No valid pipe between this node and selected node",
+  "pipeslide.pipe_adjustor.notify.start_node_not_available": "First node is invalid",
+  "pipeslide.pipe_adjustor.notify.end_node_not_available": "Last node is invalid",
+  "pipeslide.pipe_adjustor.notify.no_valid_pipe_between_selected_nodes": "No valid pipe between selected nodes",
+  "pipeslide.pipe_adjustor.notify.pipe_too_long": "Length of new pipe exceeds limit",
+  "pipeslide.pipe_adjustor.notify.successfully_adjust": "Pipe adjusted successfully",
+
+  "pipeslide.tooltips.how_to_use": "How to use this tool?",
+  "pipeslide.tooltips.pipe_connector": "Pipes are created by selecting two different Pipe Nodes one after the other. Curved pipes can be created by selecting the Curve Pipe Anchor point before selecting the second Pipe Node. Crouching and right-click to clear the selection.",
+  "pipeslide.tooltips.pipe_adjustor": "Select two directly connected Pipe Nodes to start the adjustment. Select Curve Pipe Anchor to adjust to curved pipe, and select any other non-pipe content to adjust to straight pipe. Crouching and right-click to clear the selection.",
+  "pipeslide.tooltips.pipe_material_selector": "DO NOT USE ME YET! NOT DONE YET!"
 }

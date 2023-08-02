@@ -7,6 +7,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 import plus.dragons.pipeslide.foundation.block.IEntityBlock;
 
+import java.util.List;
+
 public interface IPipeConnectableBlock<T extends BlockEntity> extends IEntityBlock<T> {
     boolean hasConnectableEnd(BlockGetter world, BlockPos pos);
 
@@ -15,4 +17,8 @@ public interface IPipeConnectableBlock<T extends BlockEntity> extends IEntityBlo
     void addPipeConnection(BlockGetter world, BlockPos pos, BlockPos connectTarget, Direction playerFacing, boolean primaryForRender, @Nullable BlockPos midPoint);
 
     void removePipeConnection(BlockGetter world, BlockPos pos, BlockPos removeTarget);
+
+    void adjustPipeConnectionShape(BlockGetter world, BlockPos pos, BlockPos connectTarget, @Nullable BlockPos midPoint);
+
+    List<PipeConnection> getConnections(BlockGetter world, BlockPos pos);
 }

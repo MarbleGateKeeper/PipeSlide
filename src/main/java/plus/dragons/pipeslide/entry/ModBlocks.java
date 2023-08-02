@@ -5,13 +5,13 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import plus.dragons.pipeslide.PipeSlide;
+import plus.dragons.pipeslide.content.pipes.PipeCurveAnchorBlock;
 import plus.dragons.pipeslide.content.pipes.specific.node.PipeNodeBlock;
 import plus.dragons.pipeslide.content.pipes.specific.platform.boat.PipeBoatDockBlock;
 import plus.dragons.pipeslide.content.pipes.specific.platform.item.PipeItemReceiverBlock;
 import plus.dragons.pipeslide.content.pipes.specific.platform.minecart.PipeMinecartStationBlock;
 import plus.dragons.pipeslide.content.pipes.specific.platform.mob.PipeMobPlatformBlock;
 import plus.dragons.pipeslide.content.pipes.specific.platform.player.PipePlayerPlatformBlock;
-import plus.dragons.pipeslide.content.pipes.PipeCurveAnchorBlock;
 
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PipeSlide.MOD_ID);

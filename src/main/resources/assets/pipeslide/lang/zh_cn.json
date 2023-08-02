@@ -1,5 +1,7 @@
 {
-  "item.pipeslide.pipe_node_connector": "管道链接器",
+  "item.pipeslide.pipe_connector": "管道链接器",
+  "item.pipeslide.pipe_adjustor": "管道形态调整器",
+  "item.pipeslide.pipe_material_selector": "管道材质选择器",
   "block.pipeslide.pipe_node": "管道节点",
   "block.pipeslide.pipe_player_platform": "管道玩家登陆平台",
   "block.pipeslide.pipe_mob_platform": "管道生物登陆平台",
@@ -10,15 +12,31 @@
 
   "creativeModeTab.pipeslide.general": "管道速滑",
 
-  "pipeslide.pipe.start_connect": "已选择一个节点",
-  "pipeslide.pipe.selection_cleared": "已清除所选节点",
-  "pipeslide.pipe.anchor_chose": "已选择曲线锚点",
-  "pipeslide.pipe.anchor_chose_again": "已重新选择曲线锚点",
-  "pipeslide.pipe.start_node_not_available": "先前所选节点已失效",
-  "pipeslide.pipe.already_connected": "该节点已到达最大连接数",
-  "pipeslide.pipe.anchor_not_available": "先前所选曲线锚点已失效",
-  "pipeslide.pipe.pipe_too_long": "距离过长，无法建立链接",
-  "pipeslide.pipe.successfully_connect": "链接已成功建立",
-  "pipeslide.pipe.not_connectable": "不是可以链接的选项",
-  "pipeslide.pipe.not_pipe_node": "不是节点"
+  "pipeslide.pipe_connector.notify.start_connect": "已选择一个节点",
+  "pipeslide.pipe_connector.notify.selection_cleared": "已清除所选节点",
+  "pipeslide.pipe_connector.notify.anchor_selected": "已选择曲线锚点",
+  "pipeslide.pipe_connector.notify.anchor_re_selected": "已重新选择曲线锚点",
+  "pipeslide.pipe_connector.notify.start_node_not_available": "先前所选节点已失效",
+  "pipeslide.pipe_connector.notify.already_connected": "该节点已到达最大连接数",
+  "pipeslide.pipe_connector.notify.anchor_not_available": "先前所选曲线锚点已失效",
+  "pipeslide.pipe_connector.notify.pipe_too_long": "管道过长",
+  "pipeslide.pipe_connector.notify.successfully_connect": "链接已成功建立",
+  "pipeslide.pipe_connector.notify.not_connectable": "不是可以链接的选项",
+  "pipeslide.pipe_connector.notify.not_pipe_node": "不是节点",
+
+  "pipeslide.pipe_adjustor.notify.first_node_selected": "已选择一个节点",
+  "pipeslide.pipe_adjustor.notify.selection_cleared": "已清除所选节点",
+  "pipeslide.pipe_adjustor.notify.pipe_re_selected": "已重新选择管道",
+  "pipeslide.pipe_adjustor.notify.pipe_selected": "已选择管道",
+  "pipeslide.pipe_adjustor.notify.no_valid_pipe_between_these_nodes": "该点和已选节点间无管道",
+  "pipeslide.pipe_adjustor.notify.start_node_not_available": "第一个节点已失效",
+  "pipeslide.pipe_adjustor.notify.end_node_not_available": "第二个节点已失效",
+  "pipeslide.pipe_adjustor.notify.no_valid_pipe_between_selected_nodes": "已选节点间无管道",
+  "pipeslide.pipe_adjustor.notify.pipe_too_long": "调整后的管道过长",
+  "pipeslide.pipe_adjustor.notify.successfully_adjust": "管道已完成调整",
+
+  "pipeslide.tooltips.how_to_use": "如何使用该工具？",
+  "pipeslide.tooltips.pipe_connector": "先后选择两个不同的管道节点即可建立管道。选择第二个节点前选择曲线管道锚点即可建立曲线管道。蹲下右键即可清空已选内容。",
+  "pipeslide.tooltips.pipe_adjustor": "选择两个直接连接的管道节点即可开始调整。选择曲线管道锚点来调整为曲线管道，选择其他任何非管道内容即可调整为直线管道。蹲下右键即可清空已选内容。",
+  "pipeslide.tooltips.pipe_material_selector": "请勿使用该物品！未完成！"
 }
