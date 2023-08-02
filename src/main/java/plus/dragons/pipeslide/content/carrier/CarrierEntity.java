@@ -33,6 +33,9 @@ public class CarrierEntity extends Entity {
     private double lx;
     private double ly;
     private double lz;
+    private double lxd;
+    private double lyd;
+    private double lzd;
     private int beforeEjectTick = 5;
     private boolean readyToEject = false;
 
@@ -80,11 +83,12 @@ public class CarrierEntity extends Entity {
                 double d2 = this.getZ() + (this.lz - this.getZ()) / (double) this.lSteps;
                 --this.lSteps;
                 this.setPos(d0, d1, d2);
+            } else {
+                this.reapplyPosition();
             }
-            reapplyPosition();
             adjustRotation();
             if (getFirstPassenger() != null) {
-                positionRider(getFirstPassenger());
+                //positionRider(getFirstPassenger());
                 adjustPassengerRotation();
             }
         } else {
@@ -204,6 +208,18 @@ public class CarrierEntity extends Entity {
         this.ly = pY;
         this.lz = pZ;
         this.lSteps = pPosRotationIncrements + 2;
+        this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
+    }
+
+    /**
+     * Updates the entity motion clientside, called by packets from the server
+     */
+    @Override
+    public void lerpMotion(double pX, double pY, double pZ) {
+        this.lxd = pX;
+        this.lyd = pY;
+        this.lzd = pZ;
+        this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
     }
 
     public static void modifyFOV(ComputeFovModifierEvent event) {
