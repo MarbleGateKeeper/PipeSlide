@@ -18,7 +18,7 @@ public class ModCreativeModeTab {
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.PIPE_CONNECTOR.get());
                 output.accept(ModItems.PIPE_ADJUSTOR.get());
-                output.accept(ModItems.PIPE_MATERIAL_SELECTOR.get());
+                //output.accept(ModItems.PIPE_MATERIAL_SELECTOR.get());
                 output.accept(ModItems.PIPE_NODE.get());
                 output.accept(ModItems.PIPE_PLAYER_PLATFORM.get());
                 output.accept(ModItems.PIPE_MOB_PLATFORM.get());
