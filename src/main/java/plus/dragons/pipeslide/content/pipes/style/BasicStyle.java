@@ -1,8 +1,5 @@
 package plus.dragons.pipeslide.content.pipes.style;
 
-//import com.lowdragmc.shimmer.client.postprocessing.PostProcessing;
-//import com.lowdragmc.shimmer.client.shader.RenderUtils;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;

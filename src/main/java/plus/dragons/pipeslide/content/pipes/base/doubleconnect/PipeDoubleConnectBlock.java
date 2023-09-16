@@ -150,6 +150,11 @@ public abstract class PipeDoubleConnectBlock<T extends PipeDoubleConnectBlockEnt
     }
 
     @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return 15;
+    }
+
+    @Override
     public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return false;
     }
